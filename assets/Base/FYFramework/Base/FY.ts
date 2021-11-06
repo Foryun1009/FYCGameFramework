@@ -6,6 +6,7 @@ import { FYDeviceComponent } from '../Device/FYDeviceComponent';
 import { FYEntityComponent } from '../Entity/FYEntityComponent';
 import { FYEventComponent } from '../Event/FYEventComponent';
 import FYLog from '../Log/FYLog';
+import { FYNetComponent } from '../Net/FYNetComponent';
 import { FYResourceComponent } from '../Resource/FYResourceComponent';
 import { FYShareComponent } from '../Share/FYShareComponent';
 import { FYStorageComponent } from '../Storage/FYStorageComponent';
@@ -37,6 +38,8 @@ export class FY extends Component {
     public static audio: FYAudioComponent;
     /** 设备组件 */
     public static device: FYDeviceComponent;
+    /** 网络组件 */
+    public static net: FYNetComponent;
 
     onLoad() {
         this.initComponent();
@@ -52,6 +55,7 @@ export class FY extends Component {
         FY.share = this.getOrAddComponent(FYShareComponent);
         FY.audio = this.getOrAddComponent(FYAudioComponent);
         FY.device = this.getOrAddComponent(FYDeviceComponent);
+        FY.net = this.getOrAddComponent(FYNetComponent);
     }
 
     public getOrAddComponent<T extends FYComponent>(Ctor: new () => T): T {

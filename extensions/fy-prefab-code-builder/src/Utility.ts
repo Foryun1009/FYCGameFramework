@@ -210,7 +210,7 @@ export default class Utility {
                     let componentEventConfig = Const.COMPONENT_EVENT_CONFIG[componentType];
                     if (componentEventConfig) {
                         let cecLen = componentEventConfig.length;
-                        for(let k = 0; k < cecLen; k++){
+                        for (let k = 0; k < cecLen; k++) {
                             let functionName = componentEventConfig[k]['FunctionName'];
                             let eventName = componentEventConfig[k]['EventName'];
                             let callbackName = `on${variableName}${componentType}${functionName}`;
@@ -397,7 +397,7 @@ export default class Utility {
     public static genAllPrefabClass(resourceRootPath: string, prefabType: Enum.PrefabType, assetChangeFlagData: Array<string>) {
         let resourcePath = resourceRootPath + '/' + prefabType;
         if (!fs.existsSync(resourcePath)) {
-            console.error('目录不存在:' + resourcePath);
+            console.warn(`预制类型为:${prefabType},其目录不存在:${resourcePath}`);
             return;
         }
 
@@ -407,7 +407,7 @@ export default class Utility {
         let fileNamesLen = fileNames.length;
 
         if (fileNamesLen <= 0) {
-            console.log('没有需要生成的脚本');
+            // console.log(`没有需要生成的脚本, 脚本类型: ${prefabType}`);
             return;
         }
 

@@ -355,7 +355,7 @@ class Utility {
     static genAllPrefabClass(resourceRootPath, prefabType, assetChangeFlagData) {
         let resourcePath = resourceRootPath + '/' + prefabType;
         if (!fs_1.default.existsSync(resourcePath)) {
-            console.error('目录不存在:' + resourcePath);
+            console.warn(`预制类型为:${prefabType},其目录不存在:${resourcePath}`);
             return;
         }
         // 文件字典 key 文件名不含扩展名 value 文件在resources下的路径
@@ -363,7 +363,7 @@ class Utility {
         let fileNames = Utility.readFileList(resourcePath, []);
         let fileNamesLen = fileNames.length;
         if (fileNamesLen <= 0) {
-            console.log('没有需要生成的脚本');
+            // console.log(`没有需要生成的脚本, 脚本类型: ${prefabType}`);
             return;
         }
         Utility.checkDirectory(Const_1.default.ROOT_EXPORT_PATH);
