@@ -1,0 +1,50 @@
+{
+    "package_version": 2,
+    "version": "1.0.0",
+    "name": "fy-excel-tools",
+    "description": "i18n:fy-excel-tools.description",
+    "main": "./dist/main.js",
+    "dependencies": {
+        "convert-excel-to-json": "^1.7.0",
+        "fs-extra": "^10.0.0"
+    },
+    "devDependencies": {
+        "@types/convert-excel-to-json": "^1.7.1",
+        "@types/fs-extra": "^9.0.13"
+    },
+    "panels": {
+        "default": {
+            "title": "Excel转换工具",
+            "type": "dockable",
+            "main": "dist/panels/default/script",
+            "size": {
+                "min-width": 600,
+                "min-height": 360,
+                "width": 600,
+                "height": 360
+            }
+        }
+    },
+    "contributions": {
+        "menu": [
+            {
+                "path": "i18n:menu.extension/ForyunTools",
+                "label": "2.Excel转换工具",
+                "message": "open-excel-to-json-panel"
+            }
+        ],
+        "messages": {
+            "open-excel-to-json-panel": {
+                "methods": [
+                    "openExcelToJsonPanel"
+                ]
+            }
+        }
+    },
+    "author": "Foryun",
+    "editor": ">=3.3.0",
+    "scripts": {
+        "build": "tsc -b",
+        "watch": "tsc -w"
+    }
+}

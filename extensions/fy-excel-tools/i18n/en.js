@@ -1,0 +1,1 @@
+"use strict";module.exports={description:"Convert Excel config to data, and generate the corresponding configuration script."};

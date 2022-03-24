@@ -1,0 +1,35 @@
+{
+  "name": "convert-excel-to-json",
+  "version": "1.7.0",
+  "description": "Convert Excel to JSON",
+  "homepage": "https://github.com/DiegoZoracKy/convert-excel-to-json/",
+  "main": "./lib/convert-excel-to-json.js",
+  "bin": "./bin/cli.js",
+  "author": {
+    "name": "Diego ZoracKy",
+    "email": "diego.zoracky@gmail.com",
+    "url": "https://github.com/DiegoZoracKy/"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/DiegoZoracKy/convert-excel-to-json.git"
+  },
+  "keywords": [
+    "excel to json",
+    "converts excel"
+  ],
+  "scripts": {
+    "test": "mocha ./tests -b"
+  },
+  "dependencies": {
+    "argparse": "^1.0.2",
+    "magicli": "0.0.8",
+    "node.extend": "^2.0.2",
+    "xlsx": "^0.12.1"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^5.2.0"
+  }
+}

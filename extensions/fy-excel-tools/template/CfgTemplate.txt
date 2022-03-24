@@ -1,0 +1,46 @@
+import { BufferAsset } from "cc";
+import { FY } from "../../FYFramework/Base/FY";
+import { Pako } from "../../FYFramework/Lib/pako/Pako";
+import FYLog from "../../FYFramework/Log/FYLog";
+import JsonHPack from "../../FYFramework/Lib/JsonHPack";
+
+export default class Cfg$CONFIG_NAME {
+    private static _dictInfo: Cfg$CONFIG_NAMEInfo[];
+    /** 关键字名字 */
+    private static _keyName: string = '';
+    /** 指定关键字作为key */
+    private static _dictInfoKeyName: { [key: string | number]: Cfg$CONFIG_NAMEInfo };
+
+    public static async getData(): Promise<Cfg$CONFIG_NAMEInfo[]>;
+    public static async getData(keyName: string): Promise<{ [key: string | number]: Cfg$CONFIG_NAMEInfo }>;
+    public static async getData(keyName?: string): Promise<Cfg$CONFIG_NAMEInfo[] | { [key: string | number]: Cfg$CONFIG_NAMEInfo }> {
+        if (!Cfg$CONFIG_NAME._dictInfo) {
+            let json: any = (await FY.resource.load<BufferAsset>('CFG_$CONFIG_NAME')).buffer();
+            Cfg$CONFIG_NAME._dictInfo = JsonHPack.hUnpack(JSON.parse(Pako.inflate(json, { to: "string" })));
+        }
+
+        if (keyName && keyName.length > 0) {
+            if (keyName != this._keyName || !Cfg$CONFIG_NAME._dictInfoKeyName) {
+                Cfg$CONFIG_NAME._dictInfoKeyName = {};
+                this._keyName = keyName;
+                for (let i = 0; i < Cfg$CONFIG_NAME._dictInfo.length; i++) {
+                    let element = Cfg$CONFIG_NAME._dictInfo[i];
+                    if (element[keyName]) {
+                        Cfg$CONFIG_NAME._dictInfoKeyName[element[keyName]] = element;
+                    } else {
+                        FYLog.error(`Cfg$CONFIG_NAME._dictInfo index = ${i} 找不到 keyName = ${keyName}`);
+                        return null;
+                    }
+                }
+            }
+            return Cfg$CONFIG_NAME._dictInfoKeyName;
+        }
+
+        return Cfg$CONFIG_NAME._dictInfo;
+    }
+}
+
+interface Cfg$CONFIG_NAMEInfo {
+$CONFIG_PARAMS
+}
+

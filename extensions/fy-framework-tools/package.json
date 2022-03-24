@@ -1,0 +1,49 @@
+{
+    "package_version": 2,
+    "version": "1.0.0",
+    "name": "fy-framework-tools",
+    "description": "i18n:fy-framework-tools.description",
+    "main": "./dist/main.js",
+    "dependencies": {
+        "fs-extra": "^10.0.0"
+    },
+    "devDependencies": {
+        "@types/fs-extra": "^9.0.5",
+        "@types/node": "^16.0.1"
+    },
+    "panels": {
+        "default": {
+            "title": "FY框架工具",
+            "type": "dockable",
+            "main": "dist/panels/default/script",
+            "size": {
+                "min-width": 500,
+                "min-height": 700,
+                "width": 500,
+                "height": 700
+            }
+        }
+    },
+    "contributions": {
+        "menu": [
+            {
+                "path": "i18n:menu.extension/ForyunTools",
+                "label": "1.FY框架工具",
+                "message": "open-panel"
+            }
+        ],
+        "messages": {
+            "open-panel": {
+                "methods": [
+                    "open_panel"
+                ]
+            }
+        }
+    },
+    "author": "foryun",
+    "editor": ">=3.3.0",
+    "scripts": {
+        "build": "tsc -b",
+        "watch": "tsc -w"
+    }
+}

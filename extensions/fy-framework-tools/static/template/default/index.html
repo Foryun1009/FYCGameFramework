@@ -1,0 +1,63 @@
+<div class="overflow">
+    <div class="content">
+        <ui-section class="config" header="辅助" expand>
+            <div style="text-align: center;">
+                <ui-label id="labExcludeExtensions" value="还没有排除插件内的脚本" style="color:yellow;"></ui-label>
+            </div>
+            <div>
+                <ui-button id="btnExcludeExtensions" tooltip="为了避免VSCode代码提示时，把CocosCreator插件里面的TS脚本也进行提示，所以做了屏蔽操作"
+                    style="width: 100%;">排除插件内的脚本</ui-button>
+            </div>
+            <div style="text-align: center;">
+                <ui-label id="labAddDts" value="添加类型定义文件.d.ts" style="color:white;"></ui-label>
+            </div>
+            <div>
+                <ui-button id="btnAddDts" style="width: 100%;">添加类型定义文件</ui-button>
+            </div>
+        </ui-section>
+
+        <ui-section class="config" header="初始化框架" expand>
+            <ui-prop>
+                <ui-label slot="label" value="插件中框架版本号:"></ui-label>
+                <ui-input id="verExtensions" slot="content" value="" readonly></ui-input>
+            </ui-prop>
+            <ui-prop>
+                <ui-label slot="label" value="项目中框架版本号:"></ui-label>
+                <ui-input id="verProject" slot="content" value="" readonly></ui-input>
+            </ui-prop>
+            <div style="text-align: center;">
+                <ui-label id="labInitTip" value="框架还没初始化" style="color:yellow;"></ui-label>
+            </div>
+            <div>
+                <ui-button id="btnInit" style="width: 100%;">初始化</ui-button>
+            </div>
+        </ui-section>
+
+        <ui-section class="config" header="资源路径生成器" expand>
+            <div>
+                <ui-button id="btnGenResPath" style="width: 100%;margin-bottom: 6px;">构建资源路径</ui-button>
+            </div>
+            <div>
+                <ui-button id="btnLoadResPath" style="width: 100%;margin-bottom: 6px;">解析资源路径配置</ui-button>
+            </div>
+            <div>
+                <ui-progress id="pgGenResPath" style="width: 100%;" max="100"></ui-progress>
+            </div>
+        </ui-section>
+
+        <ui-section class="config" header="预制脚本生成器" expand>
+            <div>
+                <ui-button id="btnGenPrefabCode" style="width: 100%;margin-bottom: 6px;">构建预制脚本</ui-button>
+            </div>
+            <div>
+                <ui-progress id="pgGenPrefabCode" style="width: 100%;" max="100"></ui-progress>
+            </div>
+        </ui-section>
+
+        <ui-section class="config" header="样本项目" expand>
+            <div>
+                <ui-button id="btnInitExample" style="width: 100%;">初始化样本项目</ui-button>
+            </div>
+        </ui-section>
+    </div>
+</div>
