@@ -29,17 +29,16 @@ export default class Utility {
         }
 
         //判断起始文件是文件还是目录
-        fs.stat(start, (e, s) => {
-            if (s.isFile()) {
-                // console.log("CustomPlugin: 拷贝文件", start, end)
-                fs.writeFileSync(end, fs.readFileSync(start));
-            } else {
-                //读取目录中的所有文件,递归所有目录
-                fs.readdirSync(start, "utf8").forEach(f => {
-                    this.copyFile(start + "/" + f, end + "/" + f);
-                });
-            }
-        });
+        let s = fs.statSync(start);
+        if (s.isFile()) {
+            // console.log("CustomPlugin: 拷贝文件", start, end)
+            fs.writeFileSync(end, fs.readFileSync(start));
+        } else {
+            //读取目录中的所有文件,递归所有目录
+            fs.readdirSync(start, "utf8").forEach(f => {
+                this.copyFile(start + "/" + f, end + "/" + f);
+            });
+        }
     }
 
     /**

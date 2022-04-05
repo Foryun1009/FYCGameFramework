@@ -31,18 +31,17 @@ class Utility {
             this.createDirectory(end);
         }
         //判断起始文件是文件还是目录
-        fs_1.default.stat(start, (e, s) => {
-            if (s.isFile()) {
-                // console.log("CustomPlugin: 拷贝文件", start, end)
-                fs_1.default.writeFileSync(end, fs_1.default.readFileSync(start));
-            }
-            else {
-                //读取目录中的所有文件,递归所有目录
-                fs_1.default.readdirSync(start, "utf8").forEach(f => {
-                    this.copyFile(start + "/" + f, end + "/" + f);
-                });
-            }
-        });
+        let s = fs_1.default.statSync(start);
+        if (s.isFile()) {
+            // console.log("CustomPlugin: 拷贝文件", start, end)
+            fs_1.default.writeFileSync(end, fs_1.default.readFileSync(start));
+        }
+        else {
+            //读取目录中的所有文件,递归所有目录
+            fs_1.default.readdirSync(start, "utf8").forEach(f => {
+                this.copyFile(start + "/" + f, end + "/" + f);
+            });
+        }
     }
     /**
      * 递归获取目录下所有文件

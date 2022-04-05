@@ -115,8 +115,8 @@ export default class AssistPanel {
         }
 
         if (typeof result === 'string' && result.length > 0) {
-            this.refreshUIExtension();
             fs.writeFileSync(AssistConst.TSCONFIG_PATH, result);
+            this.refreshUIExtension();
         }
     }
 

@@ -100,8 +100,8 @@ class AssistPanel {
             result += '\n' + this.strConfig.substring(endIndex);
         }
         if (typeof result === 'string' && result.length > 0) {
-            this.refreshUIExtension();
             fs_1.default.writeFileSync(AssistConst_1.default.TSCONFIG_PATH, result);
+            this.refreshUIExtension();
         }
     }
     /**
