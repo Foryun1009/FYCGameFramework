@@ -48,10 +48,15 @@ export class FYResourceComponent extends FYComponent {
     /**
      * 根据资源名加载资源
      * @param name 资源名
+     * @param isNeedCache 是否需要缓存
      * @param extendPath 扩展路径，有些资源里面还有子资源，例如图片里面有spriteFrame和texture
      * @returns 
      */
-    public async load<T extends Asset>(name: string, extendPath?: string): Promise<T> {
-        return this.resource.load<T>(name, extendPath);
+    public async load<T extends Asset>(name: string, isNeedCache = false, extendPath?: string): Promise<T> {
+        return this.resource.load<T>(name, isNeedCache, extendPath);
+    }
+
+    public async release<T extends Asset>(name: string, extendPath?: string) {
+        this.resource.release<T>(name, extendPath);
     }
 }

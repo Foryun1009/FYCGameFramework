@@ -51,12 +51,16 @@ export default class ResPathBuilderPanel {
         let fileNames = Utility.readFileList(Const.ROOT_RES_PATH, []);
 
         for (let i = 0; i < fileNames.length; i++) {
-            let element = fileNames[i];
+            // 统一文件路径分隔符，资源加载api用的/分隔符，windows路径用的\分隔符
+            let element = fileNames[i].replace(new RegExp('\\\\', 'g'), '/');
             let splits = element.split('/');
             let fileName = splits[splits.length - 1];
+
             // 没有扩展名的文件名
             let fileNameNoExt = fileName.split('.')[0];
             let prefix = Editor.Project.path + "/assets/resources/";
+            // 统一文件路径分隔符，资源加载api用的/分隔符，windows路径用的\分隔符
+            prefix = prefix.replace(new RegExp('\\\\', 'g'), '/');
             // resources加载不能带后缀名
             let fileResPath = element.replace(prefix, "").split('.')[0];
 

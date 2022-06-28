@@ -1,9 +1,16 @@
-## 简介
+# 作者信息
 
-- 该框架仅适用于CocosCreator3.3.0或以上的版本。
-- 使用该框架，只需将extensions拷贝到与assets同级目录下，然后用CocosCreator打开该项目，在菜单栏选中扩展->扩展管理器->项目，启动fy-framework-tools，则可以开启框架初始化工具。如果需要用到excel表格转二进制数据，可以开启fy-excel-tools。
-- 在菜单栏中选中扩展->ForyunTools->1.FY框架工具
-- 工具的使用方法，参考下面的编辑器工具文档。框架其他相关文档，都可以在下面的导航中找到。
+- 个人简介
+  - 懒癌晚期的独立游戏开发者
+- 博客
+  - [关于页面 - Foryun](https://www.foryun.com.cn/s/about)
+- B站
+  - [Foryun-浮云的个人空间_哔哩哔哩_bilibili](https://space.bilibili.com/2920221)
+- Gitee
+  - [Foryun (foryun) - Gitee.com](https://gitee.com/foryun)
+- Github
+  - [Foryun1009 (Foryun) (github.com)](https://github.com/Foryun1009)
+  - 
 
 ## 导航
 

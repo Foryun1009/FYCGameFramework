@@ -30,10 +30,12 @@ export class FYEntityComponent extends FYComponent {
     /**
      * 打开UI
      * @param Ctor UI的类
+     * @param parent 父对象
+     * @param isNeedCache 是否需要缓存
      * @returns 
      */
-    public async getEntity<T extends FYEntityControllerBase>(Ctor: new () => T, parent: Node): Promise<T> {
-        return this.entity.getEntity<T>(Ctor, parent);
+    public async getEntity<T extends FYEntityControllerBase>(Ctor: new () => T, parent: Node, isNeedCache: boolean = false): Promise<T> {
+        return this.entity.getEntity<T>(Ctor, parent, isNeedCache);
     }
 
     /**
@@ -45,5 +47,13 @@ export class FYEntityComponent extends FYComponent {
      */
     public instantiateEntity<T extends FYEntityControllerBase>(Ctor: new () => T, sample: Node, parent: Node): T {
         return this.entity.instantiateEntity(Ctor, sample, parent);
+    }
+
+    /**
+     * 释放Entity
+     * @param Ctor Entity的类
+     */
+    public releaseEntity<T extends FYEntityControllerBase>(Ctor: new () => T){
+        this.entity.releaseEntity<T>(Ctor);
     }
 }

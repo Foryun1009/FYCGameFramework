@@ -48,9 +48,10 @@ export class FYUIModule extends FYModule {
     /**
      * 打开UI
      * @param Ctor UI的类
+     * @param isNeedCache 是否需要缓存
      * @returns 
      */
-    public async open<T extends FYUIControllerBase>(Ctor: new () => T): Promise<T> {
+    public async open<T extends FYUIControllerBase>(Ctor: new () => T, isNeedCache: boolean = false): Promise<T> {
         return new Promise(async (resolve, reject) => {
             let prefabName = FYUtility.getPrefabName(Ctor);
             let clsName = prefabName.substring(5);
@@ -90,7 +91,7 @@ export class FYUIModule extends FYModule {
                 }
             }
 
-            let prefab = await this.resource.load<Prefab>(prefabName).catch((reason) => {
+            let prefab = await this.resource.load<Prefab>(prefabName, isNeedCache).catch((reason) => {
                 RemoveFromOnOpen()
                 FYLog.error('Open UI fail, name: ' + prefabName + ", error: " + JSON.stringify(reason));
                 reject(new Error('Open UI fail, name: ' + prefabName + ", error: " + JSON.stringify(reason)));

@@ -30,10 +30,11 @@ export class FYUIComponent extends FYComponent {
     /**
      * 打开UI
      * @param Ctor UI的类
+     * @param isNeedCache 是否需要缓存
      * @returns 
      */
-    public async open<T extends FYUIControllerBase>(Ctor: new () => T): Promise<T> {
-        return this.ui.open<T>(Ctor);
+    public async open<T extends FYUIControllerBase>(Ctor: new () => T, isNeedCache: boolean = false): Promise<T> {
+        return this.ui.open<T>(Ctor, isNeedCache);
     }
 
     /**

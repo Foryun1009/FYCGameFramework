@@ -10,6 +10,7 @@ import { FYNetComponent } from '../Net/FYNetComponent';
 import { FYResourceComponent } from '../Resource/FYResourceComponent';
 import { FYShareComponent } from '../Share/FYShareComponent';
 import { FYStorageComponent } from '../Storage/FYStorageComponent';
+import { FYTimerComponent } from '../Timer/FYTimerComponent';
 import { FYUIComponent } from '../UI/FYUIComponent';
 import FYUtility from '../Utility/FYUtility';
 import { FYComponent } from './FYComponent';
@@ -40,6 +41,8 @@ export class FY extends Component {
     public static device: FYDeviceComponent;
     /** 网络组件 */
     public static net: FYNetComponent;
+    /** 计时器组件 */
+    public static timer: FYTimerComponent;
 
     onLoad() {
         // 设置常驻节点
@@ -58,6 +61,7 @@ export class FY extends Component {
         FY.audio = this.getOrAddComponent(FYAudioComponent);
         FY.device = this.getOrAddComponent(FYDeviceComponent);
         FY.net = this.getOrAddComponent(FYNetComponent);
+        FY.timer = this.getOrAddComponent(FYTimerComponent);
     }
 
     public getOrAddComponent<T extends FYComponent>(Ctor: new () => T): T {

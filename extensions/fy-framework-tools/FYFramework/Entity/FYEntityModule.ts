@@ -31,15 +31,17 @@ export class FYEntityModule extends FYModule {
     /**
      * 获取Entity
      * @param Ctor Entity的类
+     * @param parent 父对象
+     * @param isNeedCache 是否需要缓存
      * @returns 
      */
-    public async getEntity<T extends FYEntityControllerBase>(Ctor: new () => T, parent: Node): Promise<T> {
+    public async getEntity<T extends FYEntityControllerBase>(Ctor: new () => T, parent: Node, isNeedCache: boolean = false): Promise<T> {
         return new Promise(async (resolve, reject) => {
             let prefabName = FYUtility.getPrefabName(Ctor);
             let clsName = prefabName.substring(9);
             FYLog.print(`Get entity ${clsName}`, FYLogEnum.Color.Green);
 
-            let prefab = await this.resource.load<Prefab>(prefabName).catch((reason) => {
+            let prefab = await this.resource.load<Prefab>(prefabName, isNeedCache).catch((reason) => {
                 FYLog.error('Get entity fail, name: ' + prefabName + ", error: " + JSON.stringify(reason));
                 reject(new Error('Get entity fail, name: ' + prefabName + ", error: " + JSON.stringify(reason)));
             });
@@ -89,5 +91,17 @@ export class FYEntityModule extends FYModule {
         parent?.addChild(node);
         node.reset();
         return controller;
+    }
+
+    /**
+     * 释放Entity
+     * @param Ctor Entity的类
+     */
+    public releaseEntity<T extends FYEntityControllerBase>(Ctor: new () => T){
+        let prefabName = FYUtility.getPrefabName(Ctor);
+        let clsName = prefabName.substring(9);
+        FYLog.print(`Release entity ${clsName}`, FYLogEnum.Color.Green);
+
+        this.resource.release<Prefab>(prefabName);
     }
 }
