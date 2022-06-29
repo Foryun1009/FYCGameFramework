@@ -4,8 +4,8 @@
 
 import { FYAdvertHelperBase } from "../../../FYFramework/Advert/FYAdvertHelperBase";
 
-type WXRewardedVideoAdInfo = { rewardedVideoAd: WechatMinigame.RewardedVideoAd, onLoad: () => void, onError: () => void, onClose: () => void }
-type WXBannerAdInfo = { bannerAd: WechatMinigame.BannerAd, onLoad: () => void, onError: () => void, onResize: () => void }
+type WXRewardedVideoAdInfo = { rewardedVideoAd: WechatMinigame.RewardedVideoAd, onLoad: (res: WechatMinigame.GeneralCallbackResult) => void, onError: (result: WechatMinigame.BannerAdOnErrorCallbackResult) => void, onClose: (result: WechatMinigame.RewardedVideoAdOnCloseCallbackResult) => void }
+type WXBannerAdInfo = { bannerAd: WechatMinigame.BannerAd, onLoad: (res: WechatMinigame.GeneralCallbackResult) => void, onError: (result: WechatMinigame.BannerAdOnErrorCallbackResult) => void, onResize: (result: WechatMinigame.OnResizeCallbackResult) => void }
 
 export class WechatAdvertHelper extends FYAdvertHelperBase {
     /** 激烈视频广告字典 */
@@ -21,7 +21,7 @@ export class WechatAdvertHelper extends FYAdvertHelperBase {
      * @param onClose 关闭回调
      * @param params 额外参数
      */
-    public createRewardedVideoAd(adId: string, onLoad: () => void, onError: () => void, onClose: () => void, ...params: any[]): void {
+    public createRewardedVideoAd(adId: string, onLoad: (res: WechatMinigame.GeneralCallbackResult) => void, onError: (result: WechatMinigame.BannerAdOnErrorCallbackResult) => void, onClose: (result: WechatMinigame.RewardedVideoAdOnCloseCallbackResult) => void, ...params: any[]): void {
         let ad = wx.createRewardedVideoAd({ adUnitId: adId });
         if (ad) {
             ad.onLoad(onLoad);
@@ -64,7 +64,7 @@ export class WechatAdvertHelper extends FYAdvertHelperBase {
      * @param onResize 尺寸变化回调
      * @param params 额外参数
      */
-    public createBannerAd(adId: string, onLoad: () => void, onError: () => void, onResize: () => void, ...params: any[]): void {
+    public createBannerAd(adId: string, onLoad: (res: WechatMinigame.GeneralCallbackResult) => void, onError: (result: WechatMinigame.BannerAdOnErrorCallbackResult) => void, onResize: (result: WechatMinigame.OnResizeCallbackResult) => void, ...params: any[]): void {
         let screenHeight = wx.getSystemInfoSync().screenHeight;
         let screenWidth = wx.getSystemInfoSync().screenWidth;
 
@@ -86,7 +86,7 @@ export class WechatAdvertHelper extends FYAdvertHelperBase {
                 ad.style.left = w - ad.style.realWidth / 2 + 0.1;
                 ad.style.top = h - ad.style.realHeight + 0.1;
                 if (onResize) {
-                    onResize();
+                    onResize({ height: ad.style.realHeight, width: ad.style.realWidth });
                 }
             }
 

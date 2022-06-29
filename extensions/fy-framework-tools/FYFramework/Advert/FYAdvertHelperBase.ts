@@ -11,7 +11,7 @@ export abstract class FYAdvertHelperBase {
      * @param onClose 关闭回调
      * @param params 额外参数
      */
-    public abstract createRewardedVideoAd(adId: string, onLoad: () => void, onError: () => void, onClose: () => void, ...params: any[]): void;
+    public abstract createRewardedVideoAd(adId: string, onLoad: (...params) => void, onError: (...params) => void, onClose: (...params) => void, ...params: any[]): void;
 
     /**
      * 显示激励视频广告
@@ -35,7 +35,7 @@ export abstract class FYAdvertHelperBase {
      * @param onResize 尺寸变化回调
      * @param params 额外参数
      */
-    public abstract createBannerAd(adId: string, onLoad: () => void, onError: () => void, onResize: () => void, ...params: any[]): void;
+    public abstract createBannerAd(adId: string, onLoad: (...params) => void, onError: (...params) => void, onResize: (...params) => void, ...params: any[]): void;
 
     /**
      * 显示Banner广告

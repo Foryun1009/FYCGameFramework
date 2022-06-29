@@ -42,7 +42,7 @@ export class FYAdvertComponent extends FYComponent {
      * @param onClose 关闭回调
      * @param params 额外参数
      */
-    public createRewardedVideoAd(adId: string, onLoad: () => void, onError: () => void, onClose: () => void, ...params: any[]): void {
+    public createRewardedVideoAd(adId: string, onLoad: (...params) => void, onError: (...params) => void, onClose: (...params) => void, ...params: any[]): void {
         this.advert?.createRewardedVideoAd(adId, onLoad, onError, onClose, ...params);
     }
 
@@ -72,7 +72,7 @@ export class FYAdvertComponent extends FYComponent {
      * @param onResize 尺寸变化回调
      * @param params 额外参数
      */
-    public createBannerAd(adId: string, onLoad: () => void, onError: () => void, onResize: () => void, ...params: any[]): void {
+    public createBannerAd(adId: string, onLoad: (...params) => void, onError: (...params) => void, onResize: (...params) => void, ...params: any[]): void {
         this.advert?.createBannerAd(adId, onLoad, onError, onResize, ...params);
     }
 

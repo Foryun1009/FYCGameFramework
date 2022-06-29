@@ -32,7 +32,7 @@ export class FYAdvertModule extends FYModule {
      * @param onClose 关闭回调
      * @param params 额外参数
      */
-    public createRewardedVideoAd(adId: string, onLoad: () => void, onError: () => void, onClose: () => void, ...params: any[]): void {
+    public createRewardedVideoAd(adId: string, onLoad: (...params) => void, onError: (...params) => void, onClose: (...params) => void, ...params: any[]): void {
         this._helper?.createRewardedVideoAd(adId, onLoad, onError, onClose, ...params);
     }
 
@@ -62,7 +62,7 @@ export class FYAdvertModule extends FYModule {
      * @param onResize 尺寸变化回调
      * @param params 额外参数
      */
-    public createBannerAd(adId: string, onLoad: () => void, onError: () => void, onResize: () => void, ...params: any[]): void {
+    public createBannerAd(adId: string, onLoad: (...params) => void, onError: (...params) => void, onResize: (...params) => void, ...params: any[]): void {
         this._helper?.createBannerAd(adId, onLoad, onError, onResize, ...params);
     }
 
