@@ -4,6 +4,7 @@ import { FYComponent } from '../Base/FYComponent';
 import { FYEntry } from '../Base/FYEntry';
 import { FYEntityModule } from './FYEntityModule';
 import { FYEntityControllerBase } from './FYEntityControllerBase';
+import { FYEnum } from '../Define/FYEnum';
 const { ccclass, menu } = _decorator;
 
 /**
@@ -28,14 +29,25 @@ export class FYEntityComponent extends FYComponent {
     }
 
     /**
-     * 打开UI
-     * @param Ctor UI的类
+     * 获取Entity
+     * @param Ctor Entity的类
      * @param parent 父对象
-     * @param isNeedCache 是否需要缓存
+     * @param cacheType 是否需要缓存，资源缓存类型
      * @returns 
      */
-    public async getEntity<T extends FYEntityControllerBase>(Ctor: new () => T, parent: Node, isNeedCache: boolean = false): Promise<T> {
-        return this.entity.getEntity<T>(Ctor, parent, isNeedCache);
+    public async getEntity<T extends FYEntityControllerBase>(Ctor: new () => T, parent: Node, cacheType: FYEnum.ResourceCacheType = FYEnum.ResourceCacheType.None): Promise<T> {
+        return this.entity.getEntity<T>(Ctor, parent, cacheType);
+    }
+
+    /**
+     * 获取Entity
+     * @param clsName 类名
+     * @param parent 父对象
+     * @param cacheType 是否需要缓存，资源缓存类型
+     * @returns 
+     */
+    public async getEntityByName<T extends FYEntityControllerBase>(clsName: string, parent: Node, cacheType: FYEnum.ResourceCacheType = FYEnum.ResourceCacheType.None): Promise<T> {
+        return this.entity.getEntityByName(clsName, parent, cacheType);
     }
 
     /**
@@ -53,7 +65,15 @@ export class FYEntityComponent extends FYComponent {
      * 释放Entity
      * @param Ctor Entity的类
      */
-    public releaseEntity<T extends FYEntityControllerBase>(Ctor: new () => T){
+    public releaseEntity<T extends FYEntityControllerBase>(Ctor: new () => T) {
         this.entity.releaseEntity<T>(Ctor);
+    }
+
+    /**
+     * 释放Entity
+     * @param clsName Entity的类名
+     */
+    public realeaseEntityByName(clsName: string) {
+        this.entity.realeaseEntityByName(clsName);
     }
 }

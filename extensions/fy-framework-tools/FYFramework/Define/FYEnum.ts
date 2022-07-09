@@ -49,4 +49,19 @@ export module FYEnum {
         PageViewPageTurning = 'page-turning',
     }
 
+    export enum ResourceEvent {
+        /** 预加载资源 */
+        PreLoadRes = 'PreLoadRes',
+    }
+
+    /** 资源缓存类型 */
+    export enum ResourceCacheType {
+        /** 资源不缓存 */
+        None,
+        /** 缓存资源定时自动释放 */
+        AutoRelease,
+        /** 缓存资源手动释放 */
+        ManualRelease,
+    }
+
 }

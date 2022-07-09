@@ -36,11 +36,12 @@ export class DefaultStorageHelper extends FYStorageHelperBase {
     /**
      * 获取数值
      * @param key 关键字
+     * @param defaultValue 默认值
      */
-    public getNumber(key: string): number {
+    public getNumber(key: string, defaultValue?: number): number {
         let value = sys.localStorage.getItem(key);
         if (!value) {
-            return undefined;
+            return defaultValue;
         }
 
         return Number(value);
@@ -56,9 +57,14 @@ export class DefaultStorageHelper extends FYStorageHelperBase {
     /**
      * 获取字符串
      * @param key 关键字
+     * @param defaultValue 默认值
      */
-    public getString(key: string): string {
-        return sys.localStorage.getItem(key);
+    public getString(key: string, defaultValue?: string): string {
+        let value = sys.localStorage.getItem(key);
+        if (!value) {
+            return defaultValue;
+        }
+        return value;
     }
     /**
      * 获取对象
@@ -74,11 +80,12 @@ export class DefaultStorageHelper extends FYStorageHelperBase {
     /**
      * 获取对象
      * @param key 关键字
+     * @param defaultValue 默认值
      */
-    public getObject(key: string): Object {
+    public getObject(key: string, defaultValue?: Object): Object {
         let value = sys.localStorage.getItem(key);
         if (!value) {
-            return;
+            return defaultValue;
         }
 
         return JSON.parse(value);

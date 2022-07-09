@@ -24,8 +24,9 @@ export abstract class FYStorageHelperBase {
     /**
      * 获取数值
      * @param key 关键字
+     * @param defaultValue 默认值
      */
-    public abstract getNumber(key: string): number;
+    public abstract getNumber(key: string, defaultValue?: number): number;
     /**
      * 设置字符串
      * @param key 关键字
@@ -35,8 +36,9 @@ export abstract class FYStorageHelperBase {
     /**
      * 获取字符串
      * @param key 关键字
+     * @param defaultValue 默认值
      */
-    public abstract getString(key: string): string;
+    public abstract getString(key: string, defaultValue?: string): string;
     /**
      * 设置对象
      * @param key 关键字
@@ -46,8 +48,9 @@ export abstract class FYStorageHelperBase {
     /**
      * 获取对象
      * @param key 关键字
+     * @param defaultValue 默认值
      */
-    public abstract getObject(key: string): Object;
+    public abstract getObject(key: string, defaultValue?: Object): Object;
     /**
      * 移除
      * @param key 关键字

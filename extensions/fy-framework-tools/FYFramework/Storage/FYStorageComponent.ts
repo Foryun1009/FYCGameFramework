@@ -64,9 +64,10 @@ export class FYStorageComponent extends FYComponent {
     /**
      * 获取数值
      * @param key 关键字
+     * @param defaultValue 默认值
      */
-    public getNumber(key: string): number {
-        return this.storage?.getNumber(key);
+    public getNumber(key: string, defaultValue?: number): number {
+        return this.storage?.getNumber(key, defaultValue);
     }
     /**
      * 设置字符串
@@ -79,9 +80,10 @@ export class FYStorageComponent extends FYComponent {
     /**
      * 获取字符串
      * @param key 关键字
+     * @param defaultValue 默认值
      */
-    public getString(key: string): string {
-        return this.storage?.getString(key);
+    public getString(key: string, defaultValue?: string): string {
+        return this.storage?.getString(key, defaultValue);
     }
     /**
      * 获取对象
@@ -94,8 +96,8 @@ export class FYStorageComponent extends FYComponent {
      * 获取对象
      * @param key 关键字
      */
-    public getObject(key: string): Object {
-        return this.storage?.getObject(key);
+    public getObject(key: string, defaultValue?: Object): Object {
+        return this.storage?.getObject(key, defaultValue);
     }
     /**
      * 移除

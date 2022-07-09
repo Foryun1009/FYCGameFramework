@@ -2,6 +2,7 @@
 import { _decorator, Asset } from 'cc';
 import { FYComponent } from '../Base/FYComponent';
 import { FYEntry } from '../Base/FYEntry';
+import { FYEnum } from '../Define/FYEnum';
 import { FYResourceModule } from './FYResourceModule';
 const { ccclass, menu } = _decorator;
 
@@ -48,12 +49,20 @@ export class FYResourceComponent extends FYComponent {
     /**
      * 根据资源名加载资源
      * @param name 资源名
-     * @param isNeedCache 是否需要缓存
+     * @param cacheType 是否需要缓存，资源缓存类型
      * @param extendPath 扩展路径，有些资源里面还有子资源，例如图片里面有spriteFrame和texture
      * @returns 
      */
-    public async load<T extends Asset>(name: string, isNeedCache = false, extendPath?: string): Promise<T> {
-        return this.resource.load<T>(name, isNeedCache, extendPath);
+    public async load<T extends Asset>(name: string, cacheType: FYEnum.ResourceCacheType = FYEnum.ResourceCacheType.None, extendPath?: string): Promise<T> {
+        return this.resource.load<T>(name, cacheType, extendPath);
+    }
+
+    /**
+     * 预加载资源
+     * @param nameList 预加载资源名列表
+     */
+    public async preload(nameList: Array<string>) {
+        this.resource.preload(nameList);
     }
 
     public async release<T extends Asset>(name: string, extendPath?: string) {

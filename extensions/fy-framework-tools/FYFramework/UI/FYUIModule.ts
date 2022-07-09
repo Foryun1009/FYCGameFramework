@@ -13,6 +13,7 @@ import { FYUIControllerBase } from "./FYUIControllerBase";
 import { FYResourceModule } from "../Resource/FYResourceModule";
 import { FYEntry } from "../Base/FYEntry";
 import { FYUIModelBase } from "./FYUIModelBase";
+import { FYEnum } from "../Define/FYEnum";
 
 export class FYUIModule extends FYModule {
     /**
@@ -48,13 +49,24 @@ export class FYUIModule extends FYModule {
     /**
      * 打开UI
      * @param Ctor UI的类
-     * @param isNeedCache 是否需要缓存
+     * @param cacheType 是否需要缓存，资源缓存类型
      * @returns 
      */
-    public async open<T extends FYUIControllerBase>(Ctor: new () => T, isNeedCache: boolean = false): Promise<T> {
+    public async open<T extends FYUIControllerBase>(Ctor: new () => T, cacheType: FYEnum.ResourceCacheType = FYEnum.ResourceCacheType.None): Promise<T> {
+        let prefabName = FYUtility.getPrefabName(Ctor);
+        let clsName = prefabName.substring(5);
+        return this.openByName(clsName, cacheType);
+    }
+
+    /**
+     * 打开UI
+     * @param clsName 类名
+     * @param cacheType 是否需要缓存，资源缓存类型
+     * @returns 
+     */
+    public async openByName<T extends FYUIControllerBase>(clsName: string, cacheType: FYEnum.ResourceCacheType = FYEnum.ResourceCacheType.None): Promise<T> {
         return new Promise(async (resolve, reject) => {
-            let prefabName = FYUtility.getPrefabName(Ctor);
-            let clsName = prefabName.substring(5);
+            let prefabName = `P_UI_${clsName}`;
 
             FYLog.print(`Open UI ${clsName}`, FYLogEnum.Color.Green);
             // 已打开的情况下
@@ -91,7 +103,7 @@ export class FYUIModule extends FYModule {
                 }
             }
 
-            let prefab = await this.resource.load<Prefab>(prefabName, isNeedCache).catch((reason) => {
+            let prefab = await this.resource.load<Prefab>(prefabName, cacheType).catch((reason) => {
                 RemoveFromOnOpen()
                 FYLog.error('Open UI fail, name: ' + prefabName + ", error: " + JSON.stringify(reason));
                 reject(new Error('Open UI fail, name: ' + prefabName + ", error: " + JSON.stringify(reason)));
@@ -102,7 +114,7 @@ export class FYUIModule extends FYModule {
                 let node = instantiate(prefab);
                 let model = node.addComponent(`${clsName}Model`);
                 let view = node.addComponent(`${clsName}View`) as FYUIViewBase;
-                let controller = node.addComponent(Ctor);
+                let controller: T = node.addComponent(clsName) as T;
                 controller.model = model as FYUIModelBase;
                 controller.view = view;
                 // 有了父对象 如果默认是激活状态 onLoad和onEnable会立刻被执行

@@ -2,6 +2,8 @@
 import { _decorator, Component, Node, resources, JsonAsset, Asset, TextAsset, BufferAsset, Prefab } from 'cc';
 import { FYEntry } from '../Base/FYEntry';
 import { FYModule } from '../Base/FYModule';
+import { FYEnum } from '../Define/FYEnum';
+import { FYEventModule } from '../Event/FYEventModule';
 import { Pako } from '../Lib/pako/Pako';
 import FYLog from '../Log/FYLog';
 import { FYTimerModule } from '../Timer/FYTimerModule';
@@ -19,6 +21,8 @@ export class FYResourceModule extends FYModule {
     public static clsName = "FYResourceModule";
     /** 定时器模块 */
     private _timer: FYTimerModule = FYEntry.getModule(FYTimerModule);
+    /** 事件模块 */
+    private _event: FYEventModule = FYEntry.getModule(FYEventModule);
     /** 释放缓存时间 */
     private _timeToReleaseCache: number = 60;
     /** 资源路径配置 */
@@ -78,11 +82,11 @@ export class FYResourceModule extends FYModule {
     /**
      * 根据资源名加载资源
      * @param name 资源名
-     * @param isNeedCache 是否需要缓存
+     * @param cacheType 是否需要缓存，资源缓存类型
      * @param extendPath 扩展路径，有些资源里面还有子资源，例如图片里面有spriteFrame和texture
      * @returns 
      */
-    public async load<T extends Asset>(name: string, isNeedCache: boolean = false, extendPath?: string): Promise<T> {
+    public async load<T extends Asset>(name: string, cacheType: FYEnum.ResourceCacheType = FYEnum.ResourceCacheType.None, extendPath?: string): Promise<T> {
         let resourcePath = await this.getResourcePath(name);
         if (extendPath) {
             resourcePath += `/${extendPath}`;
@@ -108,11 +112,13 @@ export class FYResourceModule extends FYModule {
                         return;
                     }
 
-                    if (isNeedCache) {
+                    if (cacheType === FYEnum.ResourceCacheType.AutoRelease) {
                         this._dictResCache[name] = resource;
                         this._timer.add(name, this._timeToReleaseCache, 1, (isCountDownComplete: boolean, curTime: number) => {
                             this.onTimer(name, isCountDownComplete, curTime);
                         });
+                    } else if (cacheType === FYEnum.ResourceCacheType.ManualRelease) {
+                        this._dictResCache[name] = resource;
                     }
 
                     resolve(resource);
@@ -123,12 +129,26 @@ export class FYResourceModule extends FYModule {
     }
 
     /**
+     * 预加载资源
+     * @param nameList 预加载资源名列表
+     */
+    public async preload(nameList: Array<string>) {
+        let sum = nameList.length;
+        let count = 0;
+        nameList.forEach(async name => {
+            await this.load(name, FYEnum.ResourceCacheType.ManualRelease);
+            count++;
+            this._event.emit(FYEnum.ResourceEvent.PreLoadRes, name, count, sum);
+        });
+    }
+
+    /**
      * 释放资源
      * @param name 资源名
      * @param extendPath 扩展路径，有些资源里面还有子资源，例如图片里面有spriteFrame和texture
      * @returns 
      */
-    public async release<T extends Asset>(name: string, extendPath?: string){
+    public async release<T extends Asset>(name: string, extendPath?: string) {
         let resourcePath = await this.getResourcePath(name);
         if (extendPath) {
             resourcePath += `/${extendPath}`;
