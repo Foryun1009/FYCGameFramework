@@ -74,7 +74,7 @@ export default class FYAudioModule extends FYModule {
      * @param loop 是否循环
      * @returns 
      */
-    public play(audioName: string, groupName: string, loop?: boolean): Promise<string> {
+    public play(audioName: string, groupName: string, loop?: boolean): Promise<FYAudioAgentHelperBase> {
         return this._helper.play(audioName, groupName, loop);
     }
 

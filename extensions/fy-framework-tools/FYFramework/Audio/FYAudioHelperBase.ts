@@ -44,7 +44,7 @@ export abstract class FYAudioHelperBase {
      * @param loop 是否循环
      * @returns 
      */
-    public abstract play(audioName: string, groupName: string, loop?:boolean): Promise<string>;
+    public abstract play(audioName: string, groupName: string, loop?:boolean): Promise<FYAudioAgentHelperBase>;
     /**
      * 停止声音
      * @param id 声音编号

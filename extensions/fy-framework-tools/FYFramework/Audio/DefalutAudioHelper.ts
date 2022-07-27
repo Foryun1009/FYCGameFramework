@@ -126,7 +126,7 @@ export default class DefaultAudioHelper extends FYAudioHelperBase {
      * @param loop 是否循环
      * @returns 
      */
-    public async play(audioName: string, groupName: string, loop?: boolean): Promise<string> {
+    public async play(audioName: string, groupName: string, loop?: boolean): Promise<FYAudioAgentHelperBase> {
         if (!this.hasGroup(groupName)) {
             FYLog.error(`Can not find the audioGroup name = ${groupName}`);
             return;
@@ -147,7 +147,7 @@ export default class DefaultAudioHelper extends FYAudioHelperBase {
                     audioAgent.loop = false;
                 }
                 audioAgent.play();
-                return audioAgent.id;
+                return audioAgent;
             }
         }
         return undefined;

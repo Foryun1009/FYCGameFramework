@@ -99,7 +99,7 @@ export class FYAudioComponent extends FYComponent {
      * @param loop 是否循环
      * @returns 
      */
-    public play(audioName: string, groupName: string, loop?: boolean): Promise<string> {
+    public play(audioName: string, groupName: string, loop?: boolean): Promise<FYAudioAgentHelperBase> {
         return this.audio.play(audioName, groupName, loop);
     }
 
