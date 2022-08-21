@@ -1,5 +1,6 @@
 import { Color, Sprite, Tween, tween, Vec3, _decorator, Node } from 'cc';
 import { FY } from '../../../FYFramework/Base/FY';
+import { FYEnum } from '../../../FYFramework/Define/FYEnum';
 import { FYUIControllerBase } from '../../../FYFramework/UI/FYUIControllerBase';
 import { GEnum } from '../../Define/GEnum';
 import { UITipsItem } from '../../Entity/UITipsItem/UITipsItem';
@@ -23,7 +24,7 @@ export class UITips extends FYUIControllerBase {
 
     public async setData(content: string) {
         this._count++;
-        this._listTween.push((await FY.entity.getEntity(UITipsItem, this.view.widget, true)).setData(content));
+        this._listTween.push((await FY.entity.getEntity(UITipsItem, this.view.widget, FYEnum.ResourceCacheType.AutoRelease)).setData(content));
     }
 
     onEnable() {
