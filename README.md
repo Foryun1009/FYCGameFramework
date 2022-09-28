@@ -10,6 +10,9 @@
   - [Foryun (foryun) - Gitee.com](https://gitee.com/foryun)
 - Github
   - [Foryun1009 (Foryun) (github.com)](https://github.com/Foryun1009)
+- QQ交流群
+  - 243390021
+
 
 ## 导航
 
