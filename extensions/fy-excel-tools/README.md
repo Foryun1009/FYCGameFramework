@@ -62,6 +62,18 @@ npm run build
 - 构建进度
   - 转成进度和日志。
 
+
+
+## 配置表格式
+
+| ID   | Name | Desc |
+| ---- | ---- | ---- |
+| 100  | 名字 | 描述 |
+
+
+
+## 使用方法
+
 - 代码中获取配置表数据方式：
 
   ```typescript
@@ -72,7 +84,7 @@ npm run build
     	// 按照配置表的行数获取
       let desc = (await CfgAccessories.getData())[0].szUpDesc;
     	// 按照指定关键字的值获取
-      let name = (await CfgAccessories.getData('iID'))[100].szName;
+      let name = (await CfgAccessories.getData('ID'))[100].szName;
   }
   ```
 

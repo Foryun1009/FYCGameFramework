@@ -25,6 +25,14 @@ export default class PrefabCodeBuilderConst {
      * 模板路径
      */
     public static readonly TEMPLATE_PATH = PrefabCodeBuilderConst.EXTENSIONS_PATH + '/fy-framework-tools/template';
+    /**
+     * 自定义类型检索路径
+     */
+    public static readonly CUSTOM_TYPE_SEARCH_PATH = Editor.Project.path + '/temp/programming/packer-driver/targets/preview';
+    /**
+     * 导入映射表
+     */
+    public static readonly IMPORT_MAP = Editor.Project.path + '/temp/programming/packer-driver/targets/preview/import-map.json';
 
     /**
      * 模板配置
@@ -131,6 +139,10 @@ export default class PrefabCodeBuilderConst {
      * 模板 视图 导入关键字
      */
     public static readonly VIEW_KEY_IMPORT = '$IMPORT';
+    /**
+     * 模板 视图 导入自定义关键字
+     */
+    public static readonly VIEW_KEY_IMPORT_CUSTOM = '$IMPORT_CUSTOM';
     /**
      * 模板 视图 类名
      */

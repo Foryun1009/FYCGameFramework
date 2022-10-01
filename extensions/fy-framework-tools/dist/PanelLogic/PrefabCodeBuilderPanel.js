@@ -4,7 +4,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const PrefabCodeBuilderConst_1 = __importDefault(require("./PrefabCodeBuilderConst"));
-const fs_1 = __importDefault(require("fs"));
 const PrefabCodeBuilderEnum_1 = require("./PrefabCodeBuilderEnum");
 const Utility_1 = __importDefault(require("../Utility"));
 class PrefabCodeBuilderPanel {
@@ -19,14 +18,15 @@ class PrefabCodeBuilderPanel {
         this._pgGenPrefabCode = pgGenPrefabCode;
         this._pgGenPrefabCode.message = '未开始构建';
         this._btnGenPrefabCode.addEventListener('confirm', () => {
+            this.genCustomTypeMap();
             // 只能点击一次
             this._btnGenPrefabCode.setAttribute('disabled', '');
             this._pgGenPrefabCode.message = '开始构建';
             this._pgGenPrefabCode.value = 1;
             // 资源变化表
             let assetChangeFlagData = [];
-            if (fs_1.default.existsSync(PrefabCodeBuilderConst_1.default.TEMP_DATA_FILE)) {
-                let raw = fs_1.default.readFileSync(PrefabCodeBuilderConst_1.default.TEMP_DATA_FILE, 'utf-8');
+            if (Utility_1.default.isExist(PrefabCodeBuilderConst_1.default.TEMP_DATA_FILE)) {
+                let raw = Utility_1.default.readFile(PrefabCodeBuilderConst_1.default.TEMP_DATA_FILE);
                 assetChangeFlagData = JSON.parse(raw);
             }
             else {
@@ -37,7 +37,7 @@ class PrefabCodeBuilderPanel {
             this.genAllPrefabClass(PrefabCodeBuilderConst_1.default.PREFAB_PATH, PrefabCodeBuilderEnum_1.PrefabCodeBuilderEnum.PrefabType.Entity, assetChangeFlagData);
             // 清空数据
             assetChangeFlagData = [];
-            fs_1.default.writeFileSync(PrefabCodeBuilderConst_1.default.TEMP_DATA_FILE, JSON.stringify(assetChangeFlagData));
+            Utility_1.default.writeFile(PrefabCodeBuilderConst_1.default.TEMP_DATA_FILE, JSON.stringify(assetChangeFlagData));
             this._btnGenPrefabCode.removeAttribute('disabled');
             this._pgGenPrefabCode.message = '构建完成';
             this._pgGenPrefabCode.value = 100;
@@ -80,7 +80,7 @@ class PrefabCodeBuilderPanel {
      * @returns
      */
     static genNodePath(prefabJson, curIndex, nodeDict, nodeNameList) {
-        var _a, _b;
+        var _a, _b, _c;
         if (!curIndex) {
             curIndex = 0;
         }
@@ -91,6 +91,13 @@ class PrefabCodeBuilderPanel {
         // console.log(`curIndex:${curIndex}, nodeDict:${nodeDict}, nodeNameList:${nodeNameList}`);
         let type = (_a = prefabJson === null || prefabJson === void 0 ? void 0 : prefabJson[curIndex]) === null || _a === void 0 ? void 0 : _a['__type__'];
         let name = (_b = prefabJson === null || prefabJson === void 0 ? void 0 : prefabJson[curIndex]) === null || _b === void 0 ? void 0 : _b['_name'];
+        if (!type.startsWith('cc.')) {
+            // 如果类型不是cc.开头的，则是自定义的类型，自定义类型名加密了，需要找到原名
+            let t = (_c = this._customTypeInfoMap[type]) === null || _c === void 0 ? void 0 : _c.name;
+            if (t != null) {
+                type = t;
+            }
+        }
         if (type === 'cc.Node') {
             let nodePath = '';
             if (nodeNameList && nodeNameList.length > 1) {
@@ -117,7 +124,7 @@ class PrefabCodeBuilderPanel {
             (nodeDict !== null && nodeDict !== void 0 ? nodeDict : (nodeDict = {}))[name] = nodeInfo;
         }
         else if (type === 'cc.PrefabInfo') {
-            // 节点结束符号，移除最后节点
+            // 节点结束符号，移除最后节点，解析完毕一个节点，则移除，因为每次解析，都是从列表里面最后一个节点开始解析。
             if (nodeNameList && nodeNameList.length > 0) {
                 nodeNameList.pop();
             }
@@ -142,10 +149,11 @@ class PrefabCodeBuilderPanel {
      * @param componentInfoList 组件信息列表
      * @param clsName 类名
      * @param prefabType 预制类型
+     * @param scriptPath 脚本路径
      * @returns
      */
-    static genViewClass(componentInfoList, clsName, prefabType) {
-        if (!fs_1.default.existsSync(PrefabCodeBuilderConst_1.default.TEMPLATE_PATH)) {
+    static genViewClass(componentInfoList, clsName, prefabType, scriptPath) {
+        if (!Utility_1.default.isExist(PrefabCodeBuilderConst_1.default.TEMPLATE_PATH)) {
             console.error('目录不存在:' + PrefabCodeBuilderConst_1.default.TEMPLATE_PATH);
             return;
         }
@@ -153,8 +161,9 @@ class PrefabCodeBuilderPanel {
             console.error('componentInfoList is null or undefined');
             return;
         }
-        let viewTemplate = fs_1.default.readFileSync(PrefabCodeBuilderConst_1.default.TEMPLATE_PATH + '/' + PrefabCodeBuilderConst_1.default.TEMPLATE_FILE_CONFIG[prefabType]['View'], 'utf-8');
+        let viewTemplate = Utility_1.default.readFile(PrefabCodeBuilderConst_1.default.TEMPLATE_PATH + '/' + PrefabCodeBuilderConst_1.default.TEMPLATE_FILE_CONFIG[prefabType]['View']);
         let imports = '{ _decorator, find, Node';
+        let importCustomTypes = '';
         let className = clsName;
         let variableDeclarations = '';
         let variableAssignment = '';
@@ -181,10 +190,19 @@ class PrefabCodeBuilderPanel {
             if (components) {
                 let cLen = components.length;
                 for (let j = 0; j < cLen; j++) {
-                    let componentType = components[j].substring(3, components[j].length);
-                    if (imports.indexOf(componentType) < 0) {
-                        // 如果没有导入，则导入
-                        imports += `, ${componentType}`;
+                    // 判断是否是自定义脚本
+                    let componentType = components[j];
+                    if (components[j].startsWith('cc.')) {
+                        componentType = components[j].substring(3, components[j].length);
+                        if (imports.indexOf(componentType) < 0) {
+                            // 如果没有导入，则导入
+                            imports += `, ${componentType}`;
+                        }
+                    }
+                    else {
+                        // 自定义类型
+                        let relativePath = Utility_1.default.getRelativePath(scriptPath, this._customTypeInfoMap[componentType].absolutePath);
+                        importCustomTypes += `import { ${componentType} } from '${relativePath}';\n`;
                     }
                     variableDeclarations += `public ${variableName}${componentType}: ${componentType} = undefined;\n    `;
                     variableAssignment += `this.${variableName}${componentType} = this.${variableName}.getComponent(${componentType});\n        `;
@@ -207,6 +225,7 @@ class PrefabCodeBuilderPanel {
         }
         imports += ' }';
         viewTemplate = viewTemplate.replace(PrefabCodeBuilderConst_1.default.VIEW_KEY_IMPORT, imports);
+        viewTemplate = viewTemplate.replace(PrefabCodeBuilderConst_1.default.VIEW_KEY_IMPORT_CUSTOM, importCustomTypes);
         viewTemplate = viewTemplate.replace(new RegExp('\\' + PrefabCodeBuilderConst_1.default.VIEW_KEY_CLASS_NAME, 'g'), className);
         viewTemplate = viewTemplate.replace(new RegExp('\\' + PrefabCodeBuilderConst_1.default.VIEW_KEY_PREFAB_NAME, 'g'), prefabName);
         viewTemplate = viewTemplate.replace(PrefabCodeBuilderConst_1.default.VIEW_KEY_VARIABLE_DECLARATIONS, variableDeclarations);
@@ -224,7 +243,7 @@ class PrefabCodeBuilderPanel {
      * @returns
      */
     static genModelClass(componentInfoList, clsName, prefabType) {
-        if (!fs_1.default.existsSync(PrefabCodeBuilderConst_1.default.TEMPLATE_PATH)) {
+        if (!Utility_1.default.isExist(PrefabCodeBuilderConst_1.default.TEMPLATE_PATH)) {
             console.error('目录不存在:' + PrefabCodeBuilderConst_1.default.TEMPLATE_PATH);
             return;
         }
@@ -232,7 +251,7 @@ class PrefabCodeBuilderPanel {
             console.error('componentInfoList is null or undefined');
             return;
         }
-        let modelTemplate = fs_1.default.readFileSync(PrefabCodeBuilderConst_1.default.TEMPLATE_PATH + '/' + PrefabCodeBuilderConst_1.default.TEMPLATE_FILE_CONFIG[prefabType]['Model'], 'utf-8');
+        let modelTemplate = Utility_1.default.readFile(PrefabCodeBuilderConst_1.default.TEMPLATE_PATH + '/' + PrefabCodeBuilderConst_1.default.TEMPLATE_FILE_CONFIG[prefabType]['Model']);
         let className = clsName;
         let prefabName = `P_${prefabType}_${className.substring(0, className.length - 5)}`;
         modelTemplate = modelTemplate.replace(new RegExp('\\' + PrefabCodeBuilderConst_1.default.VIEW_KEY_CLASS_NAME, 'g'), className);
@@ -247,7 +266,7 @@ class PrefabCodeBuilderPanel {
      * @returns
      */
     static genControllerClass(componentInfoList, clsName, prefabType) {
-        if (!fs_1.default.existsSync(PrefabCodeBuilderConst_1.default.TEMPLATE_PATH)) {
+        if (!Utility_1.default.isExist(PrefabCodeBuilderConst_1.default.TEMPLATE_PATH)) {
             console.error('目录不存在:' + PrefabCodeBuilderConst_1.default.TEMPLATE_PATH);
             return;
         }
@@ -255,7 +274,7 @@ class PrefabCodeBuilderPanel {
             console.error('componentInfoList is null or undefined');
             return;
         }
-        let controllerTemplate = fs_1.default.readFileSync(PrefabCodeBuilderConst_1.default.TEMPLATE_PATH + '/' + PrefabCodeBuilderConst_1.default.TEMPLATE_FILE_CONFIG[prefabType]['Controller'], 'utf-8');
+        let controllerTemplate = Utility_1.default.readFile(PrefabCodeBuilderConst_1.default.TEMPLATE_PATH + '/' + PrefabCodeBuilderConst_1.default.TEMPLATE_FILE_CONFIG[prefabType]['Controller']);
         let className = clsName;
         let prefabName = `P_${prefabType}_${className}`;
         controllerTemplate = controllerTemplate.replace(new RegExp('\\' + PrefabCodeBuilderConst_1.default.VIEW_KEY_CLASS_NAME, 'g'), className);
@@ -270,8 +289,8 @@ class PrefabCodeBuilderPanel {
         Utility_1.default.checkDirectory(PrefabCodeBuilderConst_1.default.TEMP_PATH);
         Utility_1.default.checkDirectory(PrefabCodeBuilderConst_1.default.TEMP_DATA_PATH);
         let assetChangeFlagData = [];
-        if (fs_1.default.existsSync(PrefabCodeBuilderConst_1.default.TEMP_DATA_FILE)) {
-            let raw = fs_1.default.readFileSync(PrefabCodeBuilderConst_1.default.TEMP_DATA_FILE, 'utf-8');
+        if (Utility_1.default.isExist(PrefabCodeBuilderConst_1.default.TEMP_DATA_FILE)) {
+            let raw = Utility_1.default.readFile(PrefabCodeBuilderConst_1.default.TEMP_DATA_FILE);
             assetChangeFlagData = JSON.parse(raw);
         }
         if (!assetChangeFlagData) {
@@ -285,7 +304,7 @@ class PrefabCodeBuilderPanel {
         }
         if (isChanged) {
             // 写入文件
-            fs_1.default.writeFileSync(PrefabCodeBuilderConst_1.default.TEMP_DATA_FILE, JSON.stringify(assetChangeFlagData));
+            Utility_1.default.writeFile(PrefabCodeBuilderConst_1.default.TEMP_DATA_FILE, JSON.stringify(assetChangeFlagData));
         }
     }
     /**
@@ -302,7 +321,7 @@ class PrefabCodeBuilderPanel {
         let viewClassName = moduleName + 'View';
         let modulePath = sPath + '/' + moduleName;
         let scriptPath = modulePath + `/${viewClassName}.ts`;
-        let prefabRaw = fs_1.default.readFileSync(prefabFileName, 'utf-8');
+        let prefabRaw = Utility_1.default.readFile(prefabFileName);
         let prefabJson = JSON.parse(prefabRaw);
         let nodePath = this.genNodePath(prefabJson);
         if (!nodePath) {
@@ -312,36 +331,36 @@ class PrefabCodeBuilderPanel {
         if (!components) {
             return;
         }
-        let viewClass = this.genViewClass(components, viewClassName, prefabType);
+        let viewClass = this.genViewClass(components, viewClassName, prefabType, scriptPath);
         if (!viewClass) {
             return;
         }
         Utility_1.default.checkDirectory(modulePath);
         // 写入文件
-        fs_1.default.writeFileSync(scriptPath, viewClass);
+        Utility_1.default.writeFile(scriptPath, viewClass);
         // 构建Model
         let modelClassName = moduleName + 'Model';
         let modelScriptPath = `${sPath}/${moduleName}/${modelClassName}.ts`;
-        if (!fs_1.default.existsSync(modelScriptPath)) {
+        if (!Utility_1.default.isExist(modelScriptPath)) {
             // 如果没有构建，则构建
             let modelClass = this.genModelClass(components, modelClassName, prefabType);
             if (!modelClass) {
                 return;
             }
             // 写入文件
-            fs_1.default.writeFileSync(modelScriptPath, modelClass);
+            Utility_1.default.writeFile(modelScriptPath, modelClass);
         }
         // 构建Controller
         let controllerClassName = moduleName;
         let controllerScriptPath = `${sPath}/${moduleName}/${controllerClassName}.ts`;
-        if (!fs_1.default.existsSync(controllerScriptPath)) {
+        if (!Utility_1.default.isExist(controllerScriptPath)) {
             // 如果没有构建，则构建
             let controllerClass = this.genControllerClass(components, controllerClassName, prefabType);
             if (!controllerClass) {
                 return;
             }
             // 写入文件
-            fs_1.default.writeFileSync(controllerScriptPath, controllerClass);
+            Utility_1.default.writeFile(controllerScriptPath, controllerClass);
         }
     }
     /**
@@ -353,7 +372,7 @@ class PrefabCodeBuilderPanel {
      */
     static async genAllPrefabClass(resourceRootPath, prefabType, assetChangeFlagData) {
         let resourcePath = resourceRootPath + '/' + prefabType;
-        if (!fs_1.default.existsSync(resourcePath)) {
+        if (!Utility_1.default.isExist(resourcePath)) {
             console.warn(`预制类型为:${prefabType},其目录不存在:${resourcePath}`);
             return;
         }
@@ -376,7 +395,7 @@ class PrefabCodeBuilderPanel {
             let viewClassName = moduleName + 'View';
             let modulePath = sPath + '/' + moduleName;
             let scriptPath = modulePath + `/${viewClassName}.ts`;
-            if (fs_1.default.existsSync(scriptPath) && assetChangeFlagData.indexOf(fileNames[i]) < 0) {
+            if (Utility_1.default.isExist(scriptPath) && assetChangeFlagData.indexOf(fileNames[i]) < 0) {
                 // 如果View的脚本已经存在，但是又不在修改列表里面，则不需要创建
                 continue;
             }
@@ -391,6 +410,85 @@ class PrefabCodeBuilderPanel {
         // 编辑器刷新 将新创建的资源导入
         Editor.Message.request('asset-db', 'refresh-asset', `db://assets/Script/${prefabType}`);
     }
+    /**
+     * 获取自定义类型名
+     * @param encrypted 加密字符串
+     * @returns
+     */
+    static getCustomTypeName(encrypted) {
+        if (Utility_1.default.isExist(PrefabCodeBuilderConst_1.default.CUSTOM_TYPE_SEARCH_PATH)) {
+            let filePaths = Utility_1.default.readFileList(PrefabCodeBuilderConst_1.default.CUSTOM_TYPE_SEARCH_PATH, []);
+            for (let i = 0; i < filePaths.length; i++) {
+                let filePath = filePaths[i];
+                let content = Utility_1.default.readFile(filePath);
+                // 参考 _cclegacy._RF.push({}, "8bab18Kl3BDzL3yBG03VPfK", "FYUIComponent", undefined);
+                let matchLine = content.match(/_cclegacy._RF.push\(.*\)/g);
+                if (matchLine && matchLine.length > 0) {
+                    // console.log("matchLine[0] = " + matchLine[0]);
+                    // 这里已经找到加密和加密前的自定义类型名
+                    let matchWords = matchLine[0].match(/"[^"]+",/g);
+                    if (matchWords && matchWords.length >= 2) {
+                        // console.log("matchWords[0] = " + matchWords[0]);
+                        let matchEncrypted = matchWords[0].match(/[^",]+/g);
+                        if (matchEncrypted && matchEncrypted.length > 0 && matchEncrypted[0] == encrypted) {
+                            // console.log("matchEncrypted[0] = " + matchEncrypted[0]);
+                            // console.log("encrypted = " + encrypted);
+                            // 如果找到相同的加密字符串，则获取自定义类型名
+                            let matchCustomType = matchWords[1].match(/[^",]+/g);
+                            if (matchCustomType && matchCustomType.length > 0) {
+                                console.log("matchCustomType[0] = " + matchCustomType[0]);
+                                return matchCustomType[0];
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        else {
+            console.error('没有找到检索目录：' + PrefabCodeBuilderConst_1.default.CUSTOM_TYPE_SEARCH_PATH);
+        }
+        return null;
+    }
+    /**
+     * 构建自定义类型映射表
+     */
+    static genCustomTypeMap() {
+        this._customTypeInfoMap = {};
+        let raw = Utility_1.default.readFile(PrefabCodeBuilderConst_1.default.IMPORT_MAP);
+        let importMap = JSON.parse(raw);
+        let imports = importMap['imports'];
+        for (let key in imports) {
+            let value = imports[key];
+            if (key.endsWith('.ts')) {
+                /** 自定义类型信息 */
+                let customTypeInfo = { absolutePath: '', name: '', encryptedName: '' };
+                customTypeInfo.absolutePath = key;
+                let content = Utility_1.default.readFile(PrefabCodeBuilderConst_1.default.CUSTOM_TYPE_SEARCH_PATH + '/' + value);
+                // 参考 _cclegacy._RF.push({}, "8bab18Kl3BDzL3yBG03VPfK", "FYUIComponent", undefined);
+                let matchLine = content.match(/_cclegacy._RF.push\(.*\)/g);
+                if (matchLine && matchLine.length > 0) {
+                    // console.log("matchLine[0] = " + matchLine[0]);
+                    let matchWords = matchLine[0].match(/"[^"]+",/g);
+                    if (matchWords && matchWords.length >= 2) {
+                        // console.log("matchWords[0] = " + matchWords[0]);
+                        let matchEncrypted = matchWords[0].match(/[^",]+/g);
+                        if (matchEncrypted && matchEncrypted.length > 0) {
+                            // console.log("matchEncrypted[0] = " + matchEncrypted[0]);
+                            customTypeInfo.encryptedName = matchEncrypted[0];
+                            this._customTypeInfoMap[customTypeInfo.encryptedName] = customTypeInfo;
+                        }
+                        let matchCustomType = matchWords[1].match(/[^",]+/g);
+                        if (matchCustomType && matchCustomType.length > 0) {
+                            // console.log("matchCustomType[0] = " + matchCustomType[0]);
+                            customTypeInfo.name = matchCustomType[0];
+                            this._customTypeInfoMap[customTypeInfo.name] = customTypeInfo;
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 exports.default = PrefabCodeBuilderPanel;
 PrefabCodeBuilderPanel._genCount = 0;
+PrefabCodeBuilderPanel._customTypeInfoMap = {};

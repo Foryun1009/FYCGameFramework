@@ -1,0 +1,13 @@
+{
+  "ver": "1.1.39",
+  "importer": "prefab",
+  "imported": true,
+  "uuid": "9de49536-d48a-4cbe-b3e0-017b6c71c197",
+  "files": [
+    ".json"
+  ],
+  "subMetas": {},
+  "userData": {
+    "syncNodeName": "P_Entity_JoystickCtrl"
+  }
+}

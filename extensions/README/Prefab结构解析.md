@@ -63,32 +63,32 @@
 
   ```json
   [
-  {"__type__": "cc.Prefab"},
+      {"__type__": "cc.Prefab"},
   
-  {"__type__": "cc.Node","_name": "P_UI_UITips"},
+      {"__type__": "cc.Node","_name": "P_UI_UITips"},
   
-  {"__type__": "cc.Node","_name": "Widget"},
+          {"__type__": "cc.Node","_name": "Widget"},
   
-  {"__type__": "cc.Node","_name": "Bg"},
-  {"__type__": "cc.UITransform"},
-  {"__type__": "cc.CompPrefabInfo"},
-  {"__type__": "cc.Sprite"},
-  {"__type__": "cc.CompPrefabInfo"},
-  {"__type__": "cc.PrefabInfo"},
+              {"__type__": "cc.Node","_name": "Bg"},
+                  {"__type__": "cc.UITransform"},
+                  {"__type__": "cc.CompPrefabInfo"},
+                  {"__type__": "cc.Sprite"},
+                  {"__type__": "cc.CompPrefabInfo"},
+              {"__type__": "cc.PrefabInfo"},
   
-  {"__type__": "cc.Node","_name": "_Tips_"},
-  {"__type__": "cc.UITransform"},
-  {"__type__": "cc.CompPrefabInfo"},
-  {"__type__": "cc.Label"},
-  {"__type__": "cc.CompPrefabInfo"},
-  {"__type__": "cc.PrefabInfo"},
+              {"__type__": "cc.Node","_name": "_Tips_"},
+                  {"__type__": "cc.UITransform"},
+                  {"__type__": "cc.CompPrefabInfo"},
+                  {"__type__": "cc.Label"},
+                  {"__type__": "cc.CompPrefabInfo"},
+              {"__type__": "cc.PrefabInfo"},
   
-  {"__type__": "cc.UITransform"},
-  {"__type__": "cc.CompPrefabInfo"},
+              {"__type__": "cc.UITransform"},
+              {"__type__": "cc.CompPrefabInfo"},
   
-  {"__type__": "cc.PrefabInfo"},
+          {"__type__": "cc.PrefabInfo"},
   
-  {"__type__": "cc.PrefabInfo"},
+      {"__type__": "cc.PrefabInfo"},
   ]
   ```
 

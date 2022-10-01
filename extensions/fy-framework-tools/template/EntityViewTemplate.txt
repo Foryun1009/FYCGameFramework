@@ -4,6 +4,7 @@
 
 import $IMPORT from 'cc';
 import { FYEntityViewBase } from '../../../FYFramework/Entity/FYEntityViewBase';
+$IMPORT_CUSTOM
 const { ccclass, property } = _decorator;
 
 

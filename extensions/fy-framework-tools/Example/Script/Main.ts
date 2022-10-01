@@ -9,6 +9,7 @@ import { WechatAdvertHelper } from './Helper/Wechat/WechatAdvertHelper';
 import { WechatDeviceHelper } from './Helper/Wechat/WechatDeviceHelper';
 import { WechatShareHelper } from './Helper/Wechat/WechatShareHelper';
 import Session from './Session/Session';
+import { UILoading } from './UI/UILoading/UILoading';
 import { UIMenu } from './UI/UIMenu/UIMenu';
 
 const { ccclass, property } = _decorator;
@@ -31,7 +32,7 @@ export class Main extends FYMain {
                 }
             })
             wx.showShareMenu({});
-        }else if(sys.platform === sys.Platform.IOS){
+        } else if (sys.platform === sys.Platform.IOS) {
             FY.share.setHelper(new IOSShareHelper())
         }
 
@@ -79,9 +80,7 @@ export class Main extends FYMain {
         }
 
         FY.device.isVibrateOpen = isChecked;
-
         FY.ui.open(UIMenu);
-        // FY.audio.play('A_Music_G2048_Bg', GEnum.AudioGroupType.Music, true);
     }
 
     /**

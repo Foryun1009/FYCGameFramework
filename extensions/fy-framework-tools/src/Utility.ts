@@ -66,14 +66,77 @@ export default class Utility {
     }
 
     /**
+     * 读取文件
+     * @param filePath 文件路径
+     * @returns 
+     */
+    public static readFile(filePath: string) {
+        return fs.readFileSync(filePath, { encoding: 'utf-8' });
+    }
+
+    /**
+     * 写入文件
+     * @param filePath 文件路径
+     * @param data 数据
+     */
+    public static writeFile(filePath: string, data: string) {
+        fs.writeFileSync(filePath, data);
+    }
+
+    /**
      * 校验目录，如果不存在，则创建
      * @param dir 目录
      * @returns 目录
      */
-    public static checkDirectory(dir: string) {
+    public static checkDirectory(dir: string): string {
         if (!fs.existsSync(dir)) {
             fs.mkdirSync(dir);
         }
         return dir;
+    }
+
+    /**
+     * 文件或目录是否存在
+     * @param dir 目录
+     * @returns 
+     */
+    public static isExist(dir: string): boolean {
+        return fs.existsSync(dir)
+    }
+
+    /**
+     * 以路径1为起点，获取路径2的相对路径
+     * @param absolutePath1 绝对路径1
+     * @param absolutePath2 绝对路径2
+     */
+    public static getRelativePath(absolutePath1: string, absolutePath2: string) {
+        let len1 = absolutePath1.length;
+        let len2 = absolutePath2.length;
+        let len = len2;
+        if (len1 > len2) {
+            len = len1;
+        }
+
+        let tmpPath1 = absolutePath1.split('assets')[1];
+        let tmpPath2 = absolutePath2.split('assets')[1];
+
+        let endIndex = 0;
+        for (let i = 0; i < len; i++) {
+            if (tmpPath1[i] != tmpPath2[i]) {
+                endIndex = i;
+                break;
+            }
+        }
+
+        tmpPath1 = tmpPath1.substring(endIndex);
+        tmpPath2 = tmpPath2.substring(endIndex);
+        // 参考 ../../../FYFramework/UI/FYUIViewBase
+        let splits = tmpPath1.split('/');
+        let newPath = '';
+        for (let i = 0; i < splits.length - 1; i++) {
+            newPath += '../';
+        }
+
+        return newPath + tmpPath2.replace('.ts', '');
     }
 }

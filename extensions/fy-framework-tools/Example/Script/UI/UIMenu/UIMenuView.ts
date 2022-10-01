@@ -4,6 +4,7 @@
 
 import { _decorator, find, Node, UITransform, Widget, Sprite, Button } from 'cc';
 import { FYUIViewBase } from '../../../FYFramework/UI/FYUIViewBase';
+
 const { ccclass, property } = _decorator;
 
 
@@ -25,6 +26,14 @@ export class UIMenuView extends FYUIViewBase {
     public cShowUIMessageBoxUITransform: UITransform = undefined;
     public cShowUIMessageBoxSprite: Sprite = undefined;
     public cShowUIMessageBoxButton: Button = undefined;
+    public cShowUILoadingDemo: Node;
+    public cShowUILoadingDemoUITransform: UITransform = undefined;
+    public cShowUILoadingDemoSprite: Sprite = undefined;
+    public cShowUILoadingDemoButton: Button = undefined;
+    public cShowUIJoystickDemo: Node;
+    public cShowUIJoystickDemoUITransform: UITransform = undefined;
+    public cShowUIJoystickDemoSprite: Sprite = undefined;
+    public cShowUIJoystickDemoButton: Button = undefined;
     
 
     public onLoad() {
@@ -59,18 +68,30 @@ export class UIMenuView extends FYUIViewBase {
         this.cShowUIMessageBoxUITransform = this.cShowUIMessageBox.getComponent(UITransform);
         this.cShowUIMessageBoxSprite = this.cShowUIMessageBox.getComponent(Sprite);
         this.cShowUIMessageBoxButton = this.cShowUIMessageBox.getComponent(Button);
+        this.cShowUILoadingDemo = find('Widget/_ShowUILoadingDemo_', this.node);
+        this.cShowUILoadingDemoUITransform = this.cShowUILoadingDemo.getComponent(UITransform);
+        this.cShowUILoadingDemoSprite = this.cShowUILoadingDemo.getComponent(Sprite);
+        this.cShowUILoadingDemoButton = this.cShowUILoadingDemo.getComponent(Button);
+        this.cShowUIJoystickDemo = find('Widget/_ShowUIJoystickDemo_', this.node);
+        this.cShowUIJoystickDemoUITransform = this.cShowUIJoystickDemo.getComponent(UITransform);
+        this.cShowUIJoystickDemoSprite = this.cShowUIJoystickDemo.getComponent(Sprite);
+        this.cShowUIJoystickDemoButton = this.cShowUIJoystickDemo.getComponent(Button);
         
     }
 
     private addEvent() {
         this.cShowUITipsButton.node.on('click', this.oncShowUITipsButtonClick, this);
         this.cShowUIMessageBoxButton.node.on('click', this.oncShowUIMessageBoxButtonClick, this);
+        this.cShowUILoadingDemoButton.node.on('click', this.oncShowUILoadingDemoButtonClick, this);
+        this.cShowUIJoystickDemoButton.node.on('click', this.oncShowUIJoystickDemoButtonClick, this);
 
     }
 
     private removeEvent() {
         this.cShowUITipsButton.node.off('click', this.oncShowUITipsButtonClick, this);
         this.cShowUIMessageBoxButton.node.off('click', this.oncShowUIMessageBoxButtonClick, this);
+        this.cShowUILoadingDemoButton.node.off('click', this.oncShowUILoadingDemoButtonClick, this);
+        this.cShowUIJoystickDemoButton.node.off('click', this.oncShowUIJoystickDemoButtonClick, this);
 
     }
 
@@ -79,6 +100,14 @@ export class UIMenuView extends FYUIViewBase {
     }
 
     private oncShowUIMessageBoxButtonClick(component: Button) {
+        this.emit('click', component);
+    }
+
+    private oncShowUILoadingDemoButtonClick(component: Button) {
+        this.emit('click', component);
+    }
+
+    private oncShowUIJoystickDemoButtonClick(component: Button) {
         this.emit('click', component);
     }
 

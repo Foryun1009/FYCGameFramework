@@ -32,6 +32,14 @@ PrefabCodeBuilderConst.EXTENSIONS_PATH = Editor.Project.path + '/extensions';
  */
 PrefabCodeBuilderConst.TEMPLATE_PATH = PrefabCodeBuilderConst.EXTENSIONS_PATH + '/fy-framework-tools/template';
 /**
+ * 自定义类型检索路径
+ */
+PrefabCodeBuilderConst.CUSTOM_TYPE_SEARCH_PATH = Editor.Project.path + '/temp/programming/packer-driver/targets/preview';
+/**
+ * 导入映射表
+ */
+PrefabCodeBuilderConst.IMPORT_MAP = Editor.Project.path + '/temp/programming/packer-driver/targets/preview/import-map.json';
+/**
  * 模板配置
  */
 PrefabCodeBuilderConst.TEMPLATE_FILE_CONFIG = {
@@ -133,6 +141,10 @@ PrefabCodeBuilderConst.TEMP_DATA_FILE = PrefabCodeBuilderConst.TEMP_DATA_PATH + 
  * 模板 视图 导入关键字
  */
 PrefabCodeBuilderConst.VIEW_KEY_IMPORT = '$IMPORT';
+/**
+ * 模板 视图 导入自定义关键字
+ */
+PrefabCodeBuilderConst.VIEW_KEY_IMPORT_CUSTOM = '$IMPORT_CUSTOM';
 /**
  * 模板 视图 类名
  */

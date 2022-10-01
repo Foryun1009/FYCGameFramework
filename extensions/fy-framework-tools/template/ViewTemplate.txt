@@ -4,6 +4,7 @@
 
 import $IMPORT from 'cc';
 import { FYUIViewBase } from '../../../FYFramework/UI/FYUIViewBase';
+$IMPORT_CUSTOM
 const { ccclass, property } = _decorator;
 
 
