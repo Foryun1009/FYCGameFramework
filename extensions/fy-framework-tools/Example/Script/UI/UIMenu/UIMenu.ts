@@ -3,6 +3,7 @@ import { FY } from '../../../FYFramework/Base/FY';
 import { FYEnum } from '../../../FYFramework/Define/FYEnum';
 import { FYUIControllerBase } from '../../../FYFramework/UI/FYUIControllerBase';
 import { GEnum } from '../../Define/GEnum';
+import { UIConfigDemo } from '../UIConfigDemo/UIConfigDemo';
 import { UIJoystickDemo } from '../UIJoystickDemo/UIJoystickDemo';
 import { UILoadingDemo } from '../UILoadingDemo/UILoadingDemo';
 import { UIMessageBox } from '../UIMessageBox/UIMessageBox';
@@ -59,6 +60,11 @@ export class UIMenu extends FYUIControllerBase {
             case this.view.cShowUIJoystickDemoButton.name:
                 await FY.ui.open(UIJoystickDemo);
                 this.close();
+                break;
+            case this.view.cShowUIConfigDemoButton.name:
+                await FY.ui.open(UIConfigDemo);
+                this.close();
+                break;
                 break;
             default:
                 break;

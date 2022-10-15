@@ -34,6 +34,10 @@ export class UIMenuView extends FYUIViewBase {
     public cShowUIJoystickDemoUITransform: UITransform = undefined;
     public cShowUIJoystickDemoSprite: Sprite = undefined;
     public cShowUIJoystickDemoButton: Button = undefined;
+    public cShowUIConfigDemo: Node;
+    public cShowUIConfigDemoUITransform: UITransform = undefined;
+    public cShowUIConfigDemoSprite: Sprite = undefined;
+    public cShowUIConfigDemoButton: Button = undefined;
     
 
     public onLoad() {
@@ -60,22 +64,26 @@ export class UIMenuView extends FYUIViewBase {
         this.cNode = this.node;
         this.cNodeUITransform = this.cNode.getComponent(UITransform);
         this.cNodeWidget = this.cNode.getComponent(Widget);
-        this.cShowUITips = find('Widget/_ShowUITips_', this.node);
+        this.cShowUITips = find('Widget/Layout/_ShowUITips_', this.node);
         this.cShowUITipsUITransform = this.cShowUITips.getComponent(UITransform);
         this.cShowUITipsSprite = this.cShowUITips.getComponent(Sprite);
         this.cShowUITipsButton = this.cShowUITips.getComponent(Button);
-        this.cShowUIMessageBox = find('Widget/_ShowUIMessageBox_', this.node);
+        this.cShowUIMessageBox = find('Widget/Layout/_ShowUIMessageBox_', this.node);
         this.cShowUIMessageBoxUITransform = this.cShowUIMessageBox.getComponent(UITransform);
         this.cShowUIMessageBoxSprite = this.cShowUIMessageBox.getComponent(Sprite);
         this.cShowUIMessageBoxButton = this.cShowUIMessageBox.getComponent(Button);
-        this.cShowUILoadingDemo = find('Widget/_ShowUILoadingDemo_', this.node);
+        this.cShowUILoadingDemo = find('Widget/Layout/_ShowUILoadingDemo_', this.node);
         this.cShowUILoadingDemoUITransform = this.cShowUILoadingDemo.getComponent(UITransform);
         this.cShowUILoadingDemoSprite = this.cShowUILoadingDemo.getComponent(Sprite);
         this.cShowUILoadingDemoButton = this.cShowUILoadingDemo.getComponent(Button);
-        this.cShowUIJoystickDemo = find('Widget/_ShowUIJoystickDemo_', this.node);
+        this.cShowUIJoystickDemo = find('Widget/Layout/_ShowUIJoystickDemo_', this.node);
         this.cShowUIJoystickDemoUITransform = this.cShowUIJoystickDemo.getComponent(UITransform);
         this.cShowUIJoystickDemoSprite = this.cShowUIJoystickDemo.getComponent(Sprite);
         this.cShowUIJoystickDemoButton = this.cShowUIJoystickDemo.getComponent(Button);
+        this.cShowUIConfigDemo = find('Widget/Layout/_ShowUIConfigDemo_', this.node);
+        this.cShowUIConfigDemoUITransform = this.cShowUIConfigDemo.getComponent(UITransform);
+        this.cShowUIConfigDemoSprite = this.cShowUIConfigDemo.getComponent(Sprite);
+        this.cShowUIConfigDemoButton = this.cShowUIConfigDemo.getComponent(Button);
         
     }
 
@@ -84,6 +92,7 @@ export class UIMenuView extends FYUIViewBase {
         this.cShowUIMessageBoxButton.node.on('click', this.oncShowUIMessageBoxButtonClick, this);
         this.cShowUILoadingDemoButton.node.on('click', this.oncShowUILoadingDemoButtonClick, this);
         this.cShowUIJoystickDemoButton.node.on('click', this.oncShowUIJoystickDemoButtonClick, this);
+        this.cShowUIConfigDemoButton.node.on('click', this.oncShowUIConfigDemoButtonClick, this);
 
     }
 
@@ -92,6 +101,7 @@ export class UIMenuView extends FYUIViewBase {
         this.cShowUIMessageBoxButton.node.off('click', this.oncShowUIMessageBoxButtonClick, this);
         this.cShowUILoadingDemoButton.node.off('click', this.oncShowUILoadingDemoButtonClick, this);
         this.cShowUIJoystickDemoButton.node.off('click', this.oncShowUIJoystickDemoButtonClick, this);
+        this.cShowUIConfigDemoButton.node.off('click', this.oncShowUIConfigDemoButtonClick, this);
 
     }
 
@@ -108,6 +118,10 @@ export class UIMenuView extends FYUIViewBase {
     }
 
     private oncShowUIJoystickDemoButtonClick(component: Button) {
+        this.emit('click', component);
+    }
+
+    private oncShowUIConfigDemoButtonClick(component: Button) {
         this.emit('click', component);
     }
 

@@ -1,6 +1,6 @@
 {
     "package_version": 2,
-    "version": "1.0.0",
+    "version": "1.0.1",
     "name": "fy-excel-tools",
     "description": "i18n:fy-excel-tools.description",
     "main": "./dist/main.js",

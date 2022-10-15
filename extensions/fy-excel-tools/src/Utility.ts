@@ -133,7 +133,8 @@ export default class Utility {
             }
         });
         let excelFileName = '';
-        let split1 = excelPath.split('/')
+
+        let split1 = excelPath.split(path.sep)
         if (split1.length > 0) {
             let split2 = split1.reverse()[0].split('.');
             if (split2.length > 0) {
@@ -159,7 +160,7 @@ export default class Utility {
                 }
 
                 let script = this.genConfigClass(excelFileName, element);
-                fs.writeFileSync(scriptPath + '/Cfg' + excelFileName + '.ts', script);
+                fs.writeFileSync(scriptPath + path.sep + 'Cfg' + excelFileName + '.ts', script);
 
                 let strJson = JSON.stringify(element);
                 this.originalConfigSize += strJson.length;
@@ -167,7 +168,7 @@ export default class Utility {
                 let compress = Pako.deflate(JSON.stringify(JsonHPack.hPack(element, 4)), { to: "string" });
                 this.compressConfigSize += compress.length;
 
-                fs.writeFileSync(savePath + '/' + jsonFileName, compress);
+                fs.writeFileSync(savePath + path.sep + jsonFileName, compress);
             }
         }
     }

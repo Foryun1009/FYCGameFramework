@@ -12,8 +12,8 @@ module.exports = Editor.Panel.define({
         show() { console.log('show'); },
         hide() { console.log('hide'); },
     },
-    template: fs_extra_1.readFileSync(path_1.join(__dirname, '../../../../static/template/default/index.html'), 'utf-8'),
-    style: fs_extra_1.readFileSync(path_1.join(__dirname, '../../../../static/style/default/index.css'), 'utf-8'),
+    template: (0, fs_extra_1.readFileSync)((0, path_1.join)(__dirname, '../../../../static/template/default/index.html'), 'utf-8'),
+    style: (0, fs_extra_1.readFileSync)((0, path_1.join)(__dirname, '../../../../static/style/default/index.css'), 'utf-8'),
     $: {
         fileConfigPath: '#fileConfigPath',
         fileDataPath: '#fileDataPath',

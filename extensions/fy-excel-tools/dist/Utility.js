@@ -110,7 +110,7 @@ class Utility {
             console.error('脚本路径不存在，请先创建好路径, scriptPath = ' + scriptPath);
             return;
         }
-        const result = convert_excel_to_json_1.default({
+        const result = (0, convert_excel_to_json_1.default)({
             sourceFile: excelPath,
             header: {
                 rows: 1
@@ -120,7 +120,7 @@ class Utility {
             }
         });
         let excelFileName = '';
-        let split1 = excelPath.split('/');
+        let split1 = excelPath.split(path_1.default.sep);
         if (split1.length > 0) {
             let split2 = split1.reverse()[0].split('.');
             if (split2.length > 0) {
@@ -142,12 +142,12 @@ class Utility {
                     jsonFileName = Const_1.default.JSON_NAME_PRE + excelFileName + '_' + key + '.bin';
                 }
                 let script = this.genConfigClass(excelFileName, element);
-                fs_1.default.writeFileSync(scriptPath + '/Cfg' + excelFileName + '.ts', script);
+                fs_1.default.writeFileSync(scriptPath + path_1.default.sep + 'Cfg' + excelFileName + '.ts', script);
                 let strJson = JSON.stringify(element);
                 this.originalConfigSize += strJson.length;
                 let compress = pako_1.default.deflate(JSON.stringify(JsonHPack_1.default.hPack(element, 4)), { to: "string" });
                 this.compressConfigSize += compress.length;
-                fs_1.default.writeFileSync(savePath + '/' + jsonFileName, compress);
+                fs_1.default.writeFileSync(savePath + path_1.default.sep + jsonFileName, compress);
             }
         }
     }

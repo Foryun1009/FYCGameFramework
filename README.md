@@ -16,9 +16,9 @@
 
 ## 导航
 
-- [框架简介](./extensions/README/框架简介.md)
-- [编码规范](./extensions/README/编码规范.md)
-- [编辑器工具](./extensions/README/编辑器工具.md)
-- [自定义组件](./extensions/README/自定义组件.md)
-- [资源命名规范](./extensions/README/资源命名规范.md)
-- [Prefab结构解析](./extensions/README/Prefab结构解析.md)
+- [框架简介](./extensions/框架简介.md)
+- [编码规范](./extensions/编码规范.md)
+- [编辑器工具](./extensions/编辑器工具.md)
+- [自定义组件](./extensions/自定义组件.md)
+- [资源命名规范](./extensions/资源命名规范.md)
+- [Prefab结构解析](./extensions/Prefab结构解析.md)
