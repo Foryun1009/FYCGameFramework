@@ -4,6 +4,7 @@
 
 import { _decorator, find, Node, UITransform, Widget, Sprite, ProgressBar, Label } from 'cc';
 import { FYUIViewBase } from '../../../FYFramework/UI/FYUIViewBase';
+
 const { ccclass, property } = _decorator;
 
 

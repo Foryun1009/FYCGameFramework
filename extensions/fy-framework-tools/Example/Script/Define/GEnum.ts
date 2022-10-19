@@ -50,4 +50,14 @@ export module GEnum {
         /** 声音 */
         Sound = 'Sound',
     }
+
+    export enum Music {
+        /** Demo背景音乐 */
+        DemoBg = 'A_Music_Demo_Bg',
+    }
+
+    export enum TimerKey {
+        /** 自动增加钻石 */
+        AutoDiamond = 'AutoDiamond',
+    }
 }

@@ -3,11 +3,15 @@ import { FY } from '../../../FYFramework/Base/FY';
 import { FYEnum } from '../../../FYFramework/Define/FYEnum';
 import { FYUIControllerBase } from '../../../FYFramework/UI/FYUIControllerBase';
 import { GEnum } from '../../Define/GEnum';
+import { UIAudioDemo } from '../UIAudioDemo/UIAudioDemo';
 import { UIConfigDemo } from '../UIConfigDemo/UIConfigDemo';
+import { UIDiamondChangeDemo } from '../UIDiamondChangeDemo/UIDiamondChangeDemo';
 import { UIJoystickDemo } from '../UIJoystickDemo/UIJoystickDemo';
 import { UILoadingDemo } from '../UILoadingDemo/UILoadingDemo';
 import { UIMessageBox } from '../UIMessageBox/UIMessageBox';
+import { UIResourceDemo } from '../UIResourceDemo/UIResourceDemo';
 import { UITips } from '../UITips/UITips';
+import { UIViewModelDemo } from '../UIViewModelDemo/UIViewModelDemo';
 import { UIMenuModel } from './UIMenuModel';
 import { UIMenuView } from './UIMenuView';
 const { ccclass, property } = _decorator;
@@ -65,6 +69,20 @@ export class UIMenu extends FYUIControllerBase {
                 await FY.ui.open(UIConfigDemo);
                 this.close();
                 break;
+            case this.view.cShowUIAudioDemoButton.name:
+                await FY.ui.open(UIAudioDemo);
+                break;
+            case this.view.cShowUIResourceDemoButton.name:
+                await FY.ui.open(UIResourceDemo);
+                this.close();
+                break;
+            case this.view.cShowUIDiamondChangeDemoButton.name:
+                await FY.ui.open(UIDiamondChangeDemo);
+                this.close();
+                break;
+            case this.view.cShowUIViewModelDemoButton.name:
+                await FY.ui.open(UIViewModelDemo);
+                this.close();
                 break;
             default:
                 break;

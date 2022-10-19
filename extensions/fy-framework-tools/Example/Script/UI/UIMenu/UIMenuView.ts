@@ -38,6 +38,22 @@ export class UIMenuView extends FYUIViewBase {
     public cShowUIConfigDemoUITransform: UITransform = undefined;
     public cShowUIConfigDemoSprite: Sprite = undefined;
     public cShowUIConfigDemoButton: Button = undefined;
+    public cShowUIResourceDemo: Node;
+    public cShowUIResourceDemoUITransform: UITransform = undefined;
+    public cShowUIResourceDemoSprite: Sprite = undefined;
+    public cShowUIResourceDemoButton: Button = undefined;
+    public cShowUIAudioDemo: Node;
+    public cShowUIAudioDemoUITransform: UITransform = undefined;
+    public cShowUIAudioDemoSprite: Sprite = undefined;
+    public cShowUIAudioDemoButton: Button = undefined;
+    public cShowUIDiamondChangeDemo: Node;
+    public cShowUIDiamondChangeDemoUITransform: UITransform = undefined;
+    public cShowUIDiamondChangeDemoSprite: Sprite = undefined;
+    public cShowUIDiamondChangeDemoButton: Button = undefined;
+    public cShowUIViewModelDemo: Node;
+    public cShowUIViewModelDemoUITransform: UITransform = undefined;
+    public cShowUIViewModelDemoSprite: Sprite = undefined;
+    public cShowUIViewModelDemoButton: Button = undefined;
     
 
     public onLoad() {
@@ -84,6 +100,22 @@ export class UIMenuView extends FYUIViewBase {
         this.cShowUIConfigDemoUITransform = this.cShowUIConfigDemo.getComponent(UITransform);
         this.cShowUIConfigDemoSprite = this.cShowUIConfigDemo.getComponent(Sprite);
         this.cShowUIConfigDemoButton = this.cShowUIConfigDemo.getComponent(Button);
+        this.cShowUIResourceDemo = find('Widget/Layout/_ShowUIResourceDemo_', this.node);
+        this.cShowUIResourceDemoUITransform = this.cShowUIResourceDemo.getComponent(UITransform);
+        this.cShowUIResourceDemoSprite = this.cShowUIResourceDemo.getComponent(Sprite);
+        this.cShowUIResourceDemoButton = this.cShowUIResourceDemo.getComponent(Button);
+        this.cShowUIAudioDemo = find('Widget/Layout/_ShowUIAudioDemo_', this.node);
+        this.cShowUIAudioDemoUITransform = this.cShowUIAudioDemo.getComponent(UITransform);
+        this.cShowUIAudioDemoSprite = this.cShowUIAudioDemo.getComponent(Sprite);
+        this.cShowUIAudioDemoButton = this.cShowUIAudioDemo.getComponent(Button);
+        this.cShowUIDiamondChangeDemo = find('Widget/Layout/_ShowUIDiamondChangeDemo_', this.node);
+        this.cShowUIDiamondChangeDemoUITransform = this.cShowUIDiamondChangeDemo.getComponent(UITransform);
+        this.cShowUIDiamondChangeDemoSprite = this.cShowUIDiamondChangeDemo.getComponent(Sprite);
+        this.cShowUIDiamondChangeDemoButton = this.cShowUIDiamondChangeDemo.getComponent(Button);
+        this.cShowUIViewModelDemo = find('Widget/Layout/_ShowUIViewModelDemo_', this.node);
+        this.cShowUIViewModelDemoUITransform = this.cShowUIViewModelDemo.getComponent(UITransform);
+        this.cShowUIViewModelDemoSprite = this.cShowUIViewModelDemo.getComponent(Sprite);
+        this.cShowUIViewModelDemoButton = this.cShowUIViewModelDemo.getComponent(Button);
         
     }
 
@@ -93,6 +125,10 @@ export class UIMenuView extends FYUIViewBase {
         this.cShowUILoadingDemoButton.node.on('click', this.oncShowUILoadingDemoButtonClick, this);
         this.cShowUIJoystickDemoButton.node.on('click', this.oncShowUIJoystickDemoButtonClick, this);
         this.cShowUIConfigDemoButton.node.on('click', this.oncShowUIConfigDemoButtonClick, this);
+        this.cShowUIResourceDemoButton.node.on('click', this.oncShowUIResourceDemoButtonClick, this);
+        this.cShowUIAudioDemoButton.node.on('click', this.oncShowUIAudioDemoButtonClick, this);
+        this.cShowUIDiamondChangeDemoButton.node.on('click', this.oncShowUIDiamondChangeDemoButtonClick, this);
+        this.cShowUIViewModelDemoButton.node.on('click', this.oncShowUIViewModelDemoButtonClick, this);
 
     }
 
@@ -102,6 +138,10 @@ export class UIMenuView extends FYUIViewBase {
         this.cShowUILoadingDemoButton.node.off('click', this.oncShowUILoadingDemoButtonClick, this);
         this.cShowUIJoystickDemoButton.node.off('click', this.oncShowUIJoystickDemoButtonClick, this);
         this.cShowUIConfigDemoButton.node.off('click', this.oncShowUIConfigDemoButtonClick, this);
+        this.cShowUIResourceDemoButton.node.off('click', this.oncShowUIResourceDemoButtonClick, this);
+        this.cShowUIAudioDemoButton.node.off('click', this.oncShowUIAudioDemoButtonClick, this);
+        this.cShowUIDiamondChangeDemoButton.node.off('click', this.oncShowUIDiamondChangeDemoButtonClick, this);
+        this.cShowUIViewModelDemoButton.node.off('click', this.oncShowUIViewModelDemoButtonClick, this);
 
     }
 
@@ -122,6 +162,22 @@ export class UIMenuView extends FYUIViewBase {
     }
 
     private oncShowUIConfigDemoButtonClick(component: Button) {
+        this.emit('click', component);
+    }
+
+    private oncShowUIResourceDemoButtonClick(component: Button) {
+        this.emit('click', component);
+    }
+
+    private oncShowUIAudioDemoButtonClick(component: Button) {
+        this.emit('click', component);
+    }
+
+    private oncShowUIDiamondChangeDemoButtonClick(component: Button) {
+        this.emit('click', component);
+    }
+
+    private oncShowUIViewModelDemoButtonClick(component: Button) {
         this.emit('click', component);
     }
 

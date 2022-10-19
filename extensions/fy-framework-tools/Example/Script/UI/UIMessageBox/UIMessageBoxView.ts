@@ -4,6 +4,7 @@
 
 import { _decorator, find, Node, UITransform, Widget, Label, Sprite, Button } from 'cc';
 import { FYUIViewBase } from '../../../FYFramework/UI/FYUIViewBase';
+
 const { ccclass, property } = _decorator;
 
 
@@ -70,10 +71,10 @@ export class UIMessageBoxView extends FYUIViewBase {
         this.cNode = this.node;
         this.cNodeUITransform = this.cNode.getComponent(UITransform);
         this.cNodeWidget = this.cNode.getComponent(Widget);
-        this.cTitle = find('Widget/TitleBg/_Title_', this.node);
+        this.cTitle = find('Widget/_Title_', this.node);
         this.cTitleUITransform = this.cTitle.getComponent(UITransform);
         this.cTitleLabel = this.cTitle.getComponent(Label);
-        this.cContent = find('Widget/ContentBg/_Content_', this.node);
+        this.cContent = find('Widget/_Content_', this.node);
         this.cContentUITransform = this.cContent.getComponent(UITransform);
         this.cContentLabel = this.cContent.getComponent(Label);
         this.cOK = find('Widget/_OK_', this.node);

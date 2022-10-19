@@ -66,13 +66,10 @@ npm run build
 
 - 看编辑器控制台，提示”资源路径生成成功“则代表成功了。
 
-- 生成的文件在Script/Config/ConfigRes.ts
-
 - 资源加载方式：
 
 - ```typescript
   (await FY.resource.load<Texture2D>('bomb_items_01')).width;
-  (await FY.resource.loadPath<Texture2D>(ConfigRes.bomb_items_01)).width;
   ```
 
 - 为了简化框架，加快开发进度，目前不考虑热更新和AssetBundle的封装，所以就直接粗暴的用resources加载资源了。
