@@ -4,6 +4,7 @@ import { FYEnum } from '../../../FYFramework/Define/FYEnum';
 import { FYUIControllerBase } from '../../../FYFramework/UI/FYUIControllerBase';
 import { GEnum } from '../../Define/GEnum';
 import Session from '../../Session/Session';
+import { UIMenu } from '../UIMenu/UIMenu';
 import { UIDiamondChangeDemoModel } from './UIDiamondChangeDemoModel';
 import { UIDiamondChangeDemoView } from './UIDiamondChangeDemoView';
 const { ccclass, property } = _decorator;
@@ -69,6 +70,7 @@ export class UIDiamondChangeDemo extends FYUIControllerBase {
         // FYLog.log(`点击了 ${component.name}`);
         switch (component.name) {
             case this.view.cShowUIMenuButton.name:
+                await FY.ui.open(UIMenu);
                 this.close();
                 break;
             case this.view.cAddDiamondButton.name:
