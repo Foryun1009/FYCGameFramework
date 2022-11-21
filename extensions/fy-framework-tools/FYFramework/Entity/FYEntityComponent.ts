@@ -73,7 +73,7 @@ export class FYEntityComponent extends FYComponent {
      * 释放Entity
      * @param clsName Entity的类名
      */
-    public realeaseEntityByName(clsName: string) {
-        this.entity.realeaseEntityByName(clsName);
+    public releaseEntityByName(clsName: string) {
+        this.entity.releaseEntityByName(clsName);
     }
 }

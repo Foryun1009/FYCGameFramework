@@ -113,14 +113,14 @@ export class FYEntityModule extends FYModule {
     public releaseEntity<T extends FYEntityControllerBase>(Ctor: new () => T) {
         let prefabName = FYUtility.getPrefabName(Ctor);
         let clsName = prefabName.substring(9);
-        this.realeaseEntityByName(clsName);
+        this.releaseEntityByName(clsName);
     }
 
     /**
      * 释放Entity
      * @param clsName Entity的类名
      */
-    public realeaseEntityByName(clsName: string) {
+    public releaseEntityByName(clsName: string) {
         let prefabName = `P_Entity_${clsName}`;
         FYLog.print(`Release entity ${clsName}`, FYLogEnum.Color.Green);
 
