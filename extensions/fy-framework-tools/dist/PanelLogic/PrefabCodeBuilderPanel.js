@@ -45,6 +45,28 @@ class PrefabCodeBuilderPanel {
         });
     }
     /**
+     * 提炼节点名字
+     * @param nodeName 节点名字
+     * @returns
+     */
+    static extractNodeName(nodeName) {
+        const matches = nodeName.match(/([^#]*)#\{([^}]+)\}/);
+        if (matches) {
+            // 提取名字部分
+            const name = matches[1];
+            const components = matches[2].split('|').map(part => part.trim());
+            return {
+                name: name,
+                components: components
+            };
+        }
+        else {
+            return {
+                name: nodeName
+            };
+        }
+    }
+    /**
      * 生成组件信息
      * @param nodeDict 节点信息字典
      * @returns
@@ -57,16 +79,36 @@ class PrefabCodeBuilderPanel {
         for (let key in nodeDict) {
             // 如果是根节点，或者开始和末尾都是_，则认为是需要获取组件的节点
             if ((key.startsWith('_') && key.endsWith('_')) || key.startsWith('P_')) {
-                let name = key.substring(1, key.length - 1);
+                // 节点名字
+                let name = '';
+                // 组件名字数组
+                let components = null;
                 if (key.startsWith('P_')) {
                     // 根节点名字
                     name = 'Node';
+                    let result = this.extractNodeName(key);
+                    if (result.components) {
+                        components = result.components;
+                    }
+                }
+                else {
+                    let content = key.substring(1, key.length - 1);
+                    let result = this.extractNodeName(content);
+                    name = result.name;
+                    if (result.components) {
+                        components = result.components;
+                    }
                 }
                 let nodeInfo = nodeDict[key];
                 if (!nodeInfo) {
                     continue;
                 }
-                nodeList.push({ name: name, path: nodeInfo['path'], components: nodeInfo['components'] });
+                if (components == null) {
+                    components = nodeInfo['components'];
+                }
+                // 去掉cc.Node，因为默认第一个获取的就是Node，而且Node不能通过GetComponent获取，Node不是Component
+                components = components.filter(item => item !== "cc.Node");
+                nodeList.push({ name: name, path: nodeInfo['path'], components: components });
             }
         }
         return nodeList;
@@ -171,6 +213,8 @@ class PrefabCodeBuilderPanel {
         let eventOff = '';
         let eventCallback = '';
         let prefabName = `P_${prefabType}_${className.substring(0, className.length - 4)}`;
+        // 用字典来做重复排除
+        let componentDict = {};
         let len = componentInfoList.length;
         for (let i = 0; i < len; i++) {
             let componentInfo = componentInfoList[i];
@@ -194,15 +238,20 @@ class PrefabCodeBuilderPanel {
                     let componentType = components[j];
                     if (components[j].startsWith('cc.')) {
                         componentType = components[j].substring(3, components[j].length);
-                        if (imports.indexOf(componentType) < 0) {
+                        if (componentDict[componentType] != true) {
                             // 如果没有导入，则导入
                             imports += `, ${componentType}`;
+                            componentDict[componentType] = true;
                         }
                     }
                     else {
                         // 自定义类型
                         let relativePath = Utility_1.default.getRelativePath(scriptPath, this._customTypeInfoMap[componentType].absolutePath);
-                        importCustomTypes += `import { ${componentType} } from '${relativePath}';\n`;
+                        if (componentDict[componentType] != true) {
+                            // 如果没有导入，则导入
+                            importCustomTypes += `import { ${componentType} } from '${relativePath}';\n`;
+                            componentDict[componentType] = true;
+                        }
                     }
                     variableDeclarations += `public ${variableName}${componentType}: ${componentType} = undefined;\n    `;
                     variableAssignment += `this.${variableName}${componentType} = this.${variableName}.getComponent(${componentType});\n        `;
@@ -489,6 +538,6 @@ class PrefabCodeBuilderPanel {
         }
     }
 }
-exports.default = PrefabCodeBuilderPanel;
 PrefabCodeBuilderPanel._genCount = 0;
 PrefabCodeBuilderPanel._customTypeInfoMap = {};
+exports.default = PrefabCodeBuilderPanel;

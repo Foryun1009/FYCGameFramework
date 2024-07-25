@@ -29,6 +29,11 @@ export class FYUIControllerBase extends FYPrefabBase {
         return this._ui
     }
 
+    /** 预加载，再界面显示前，做数据预处理 */
+    public async preLoad() {
+
+    }
+
     public close() {
         this.ui.closeByInstance(this);
     }

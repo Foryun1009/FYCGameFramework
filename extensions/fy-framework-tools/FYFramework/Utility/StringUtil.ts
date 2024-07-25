@@ -43,4 +43,17 @@ String.prototype['limitLength'] = function (n: number) {
     return finalStr
 }
 
+/**
+ * 格式化字符串
+ * 例如：
+ * const message = ''.format("Hello, my name is {0} and I am {1} years old.", name, age);
+ * @param template 字符串模板
+ * @param args 参数
+ */
+String.prototype['format'] = function (template: string, ...args: any[]) {
+    return template.replace(/{(\d+)}/g, (match, index) => {
+        return typeof args[index] !== 'undefined' ? args[index] : match;
+    });
+}
+
 export { }

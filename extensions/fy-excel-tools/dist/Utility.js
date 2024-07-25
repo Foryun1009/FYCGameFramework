@@ -29,7 +29,7 @@ class Utility {
             }
             else {
                 let extname = path_1.default.extname(fullPath);
-                if (extname === '.xls' || extname === '.xlsx') {
+                if ((extname === '.xls' || extname === '.xlsx') && !item.startsWith('.') && !item.startsWith('_') && !item.startsWith('~$')) {
                     // 排除文件
                     filesList.push(fullPath);
                 }
@@ -102,6 +102,14 @@ class Utility {
             console.error('脚本路径错误, scriptPath = ' + scriptPath);
             return;
         }
+        if (!scriptPath.includes('assets')) {
+            console.error('脚本只能保存在CocosCreator工程的assets目录下');
+            return;
+        }
+        if (scriptPath.includes(`assets${path_1.default.sep}FYFramework`)) {
+            console.error('脚本不能保存在FYFramework框架目录下');
+            return;
+        }
         if (!fs_1.default.existsSync(savePath)) {
             console.error('保存路径不存在，请先创建好路径, savePath = ' + savePath);
             return;
@@ -110,6 +118,15 @@ class Utility {
             console.error('脚本路径不存在，请先创建好路径, scriptPath = ' + scriptPath);
             return;
         }
+        // result的结构
+        // {
+        //  Sheet1: [
+        //              { ID: 'number', Name: 'string', Desc: 'string' },
+        //              { ID: '编号', Name: '名字', Desc: '描述' },
+        //              { ID: 1, Name: 'Apple', Desc: '苹果' },
+        //              { ID: 2, Name: 'Banana', Desc: '香蕉' }
+        //          ]
+        // }
         const result = (0, convert_excel_to_json_1.default)({
             sourceFile: excelPath,
             header: {
@@ -135,14 +152,30 @@ class Utility {
         for (const key in result) {
             if (Object.prototype.hasOwnProperty.call(result, key)) {
                 const element = result[key];
+                const dictType = element.shift();
+                const dictComment = element.shift();
                 keyNum++;
-                let jsonFileName = Const_1.default.JSON_NAME_PRE + excelFileName + '.bin';
+                let configName = excelFileName;
                 if (keyNum > 1) {
                     // 如果表单数不只一个
-                    jsonFileName = Const_1.default.JSON_NAME_PRE + excelFileName + '_' + key + '.bin';
+                    configName = excelFileName + '_' + key;
                 }
-                let script = this.genConfigClass(excelFileName, element);
-                fs_1.default.writeFileSync(scriptPath + path_1.default.sep + 'Cfg' + excelFileName + '.ts', script);
+                let jsonFileName = Const_1.default.JSON_NAME_PRE + configName + '.bin';
+                let scriptFileName = scriptPath + path_1.default.sep + 'Cfg' + configName + '.ts';
+                let substring = 'assets' + path_1.default.sep;
+                const sepIndex = scriptFileName.indexOf(substring);
+                // 从子字符串末尾开始统计
+                let count = 0;
+                console.log(sepIndex);
+                for (let i = sepIndex + substring.length; i < scriptFileName.length; i++) {
+                    if (scriptFileName[i] === path_1.default.sep) {
+                        count++;
+                    }
+                }
+                console.log(scriptFileName);
+                console.log(count);
+                let script = this.genConfigClass(configName, element, dictType, dictComment, count);
+                fs_1.default.writeFileSync(scriptFileName, script);
                 let strJson = JSON.stringify(element);
                 this.originalConfigSize += strJson.length;
                 let compress = pako_1.default.deflate(JSON.stringify(JsonHPack_1.default.hPack(element, 4)), { to: "string" });
@@ -155,9 +188,12 @@ class Utility {
      * 生成视图类
      * @param configName 配置名
      * @param configData 配置数据
+     * @param types 类型
+     * @param comments 注释
+     * @param sepIndex 分隔符个数
      * @returns
      */
-    static genConfigClass(configName, configData) {
+    static genConfigClass(configName, configData, types, comments, sepIndex) {
         if (!fs_1.default.existsSync(Const_1.default.TEMPLATE_PATH)) {
             console.error('目录不存在:' + Const_1.default.TEMPLATE_PATH);
             return '';
@@ -168,23 +204,29 @@ class Utility {
         }
         let template = fs_1.default.readFileSync(Const_1.default.TEMPLATE_PATH + '/' + Const_1.default.TEMPLATE_NAME, 'utf-8');
         let params = '';
-        for (let key in configData[0]) {
-            let valueType = '';
-            if (typeof configData[0][key] === 'number') {
-                valueType = 'number';
-            }
-            else {
-                valueType = 'string';
-            }
+        for (let key in types) {
+            let valueType = types[key];
+            // 将字符串拆分为多行数组
+            const lines = comments[key].split('\n');
+            // 为每行添加注释标记并拼接成新的字符串
+            const commentLines = lines.map(line => `\t * ${line}`);
+            // 将新的字符串数组组合成最终的多行注释格式
+            const result = `\t/**\n${commentLines.join('\n')}\n\t */\n`;
+            params += result;
             params += `\t${key}: ${valueType};\n`;
         }
+        let slashes = '';
+        for (let i = 0; i < sepIndex; i++) {
+            slashes += '../';
+        }
+        template = template.replace(new RegExp('\\' + Const_1.default.TEMPLATE_KEY_SLASHES, 'g'), slashes);
         template = template.replace(new RegExp('\\' + Const_1.default.TEMPLATE_KEY, 'g'), configName);
         template = template.replace(Const_1.default.TEMPLATE_KEY_PARAMS, params);
         return template;
     }
 }
-exports.default = Utility;
 /** 原始配置大小 */
 Utility.originalConfigSize = 0;
 /** 压缩后配置大小 */
 Utility.compressConfigSize = 0;
+exports.default = Utility;

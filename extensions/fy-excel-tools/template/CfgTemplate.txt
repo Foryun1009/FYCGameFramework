@@ -1,15 +1,17 @@
 import { BufferAsset } from "cc";
-import { FY } from "../../FYFramework/Base/FY";
-import { Pako } from "../../FYFramework/Lib/pako/Pako";
-import FYLog from "../../FYFramework/Log/FYLog";
-import JsonHPack from "../../FYFramework/Lib/JsonHPack";
+import { FY } from "$CONFIG_SLASHESFYFramework/Base/FY";
+import { Pako } from "$CONFIG_SLASHESFYFramework/Lib/pako/Pako";
+import FYLog from "$CONFIG_SLASHESFYFramework/Log/FYLog";
+import JsonHPack from "$CONFIG_SLASHESFYFramework/Lib/JsonHPack";
 
-export default class Cfg$CONFIG_NAME {
+export class Cfg$CONFIG_NAME {
     private static _dictInfo: Cfg$CONFIG_NAMEInfo[];
     /** 关键字名字 */
     private static _keyName: string = '';
     /** 指定关键字作为key */
     private static _dictInfoKeyName: { [key: string | number]: Cfg$CONFIG_NAMEInfo };
+    /** 根据指定关键字归类信息数组 */
+    private static _dictInfosKeyName: { [key: string | number]: Cfg$CONFIG_NAMEInfo[] };
 
     public static async getData(): Promise<Cfg$CONFIG_NAMEInfo[]>;
     public static async getData(keyName: string): Promise<{ [key: string | number]: Cfg$CONFIG_NAMEInfo }>;
@@ -25,7 +27,7 @@ export default class Cfg$CONFIG_NAME {
                 this._keyName = keyName;
                 for (let i = 0; i < Cfg$CONFIG_NAME._dictInfo.length; i++) {
                     let element = Cfg$CONFIG_NAME._dictInfo[i];
-                    if (element[keyName]) {
+                    if (element[keyName] != null) {
                         Cfg$CONFIG_NAME._dictInfoKeyName[element[keyName]] = element;
                     } else {
                         FYLog.error(`Cfg$CONFIG_NAME._dictInfo index = ${i} 找不到 keyName = ${keyName}`);
@@ -38,9 +40,44 @@ export default class Cfg$CONFIG_NAME {
 
         return Cfg$CONFIG_NAME._dictInfo;
     }
+
+    /**
+     * 根据指定关键字归类信息数组
+     * 这个方法适用于Key对应的行不唯一的情况
+     * @param keyName 关键字
+     * @returns 
+     */
+    public static async getDatas(keyName: string): Promise<{ [key: string | number]: Cfg$CONFIG_NAMEInfo[] }> {
+        if (!Cfg$CONFIG_NAME._dictInfo) {
+            let json: any = (await FY.resource.load<BufferAsset>('CFG_$CONFIG_NAME')).buffer();
+            Cfg$CONFIG_NAME._dictInfo = JsonHPack.hUnpack(JSON.parse(Pako.inflate(json, { to: "string" })));
+        }
+
+        if (keyName && keyName.length > 0) {
+            if (keyName != this._keyName || !Cfg$CONFIG_NAME._dictInfosKeyName) {
+                Cfg$CONFIG_NAME._dictInfosKeyName = {};
+                this._keyName = keyName;
+                for (let i = 0; i < Cfg$CONFIG_NAME._dictInfo.length; i++) {
+                    let element = Cfg$CONFIG_NAME._dictInfo[i];
+                    if (element[keyName] != null) {
+                        if (Cfg$CONFIG_NAME._dictInfosKeyName[element[keyName]] == null) {
+                            Cfg$CONFIG_NAME._dictInfosKeyName[element[keyName]] = [];
+                        }
+                        Cfg$CONFIG_NAME._dictInfosKeyName[element[keyName]].push(element);
+                    } else {
+                        FYLog.error(`Cfg$CONFIG_NAME._dictInfo index = ${i} 找不到 keyName = ${keyName}`);
+                        return null;
+                    }
+                }
+            }
+            return Cfg$CONFIG_NAME._dictInfosKeyName;
+        }
+        FYLog.error(`Cfg$CONFIG_NAME._dictInfo 的 keyName 为空`);
+        return null;
+    }
 }
 
-interface Cfg$CONFIG_NAMEInfo {
+export interface Cfg$CONFIG_NAMEInfo {
 $CONFIG_PARAMS
 }
 

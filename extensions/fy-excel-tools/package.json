@@ -1,6 +1,6 @@
 {
     "package_version": 2,
-    "version": "1.0.1",
+    "version": "1.0.3",
     "name": "fy-excel-tools",
     "description": "i18n:fy-excel-tools.description",
     "main": "./dist/main.js",
@@ -30,7 +30,8 @@
             {
                 "path": "i18n:menu.extension/ForyunTools",
                 "label": "2.Excel转换工具",
-                "message": "open-excel-to-json-panel"
+                "message": "open-excel-to-json-panel",
+                "order": 2
             }
         ],
         "messages": {

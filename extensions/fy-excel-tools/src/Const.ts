@@ -34,4 +34,6 @@ export default class Const {
     public static readonly TEMPLATE_KEY = '$CONFIG_NAME';
     /** 脚本模板参数关键字 */
     public static readonly TEMPLATE_KEY_PARAMS = '$CONFIG_PARAMS';
+    /** 路径里assets/后有几个路径分隔符 */
+    public static readonly TEMPLATE_KEY_SLASHES = '$CONFIG_SLASHES'
 }

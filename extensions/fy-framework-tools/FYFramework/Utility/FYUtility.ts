@@ -41,6 +41,9 @@ export default class FYUtility {
      * @param maxValue 最大值
      */
     static getRangeRandom(minValue: number, maxValue: number) {
+        if (minValue === maxValue) {
+            return minValue;
+        }
         // 获取数组从第一个开始到指定个数的下标区间  
         return FYUtility.getRandomValueDif(minValue, maxValue, 1)[0];
     }
@@ -91,5 +94,63 @@ export default class FYUtility {
      */
     static getPrefabName(Ctor): string {
         return Ctor.prefabName;
+    }
+
+    /**
+     * 获取枚举的键名
+     * @param enumObj 枚举对象
+     * @returns 
+     */
+    static getEnumKeys(enumObj: any): Array<string> {
+        return Object.keys(enumObj).filter(key => isNaN(Number(key)));
+    }
+
+    /**
+     * 通过枚举的值获取枚举的键名
+     * @param enumObj 枚举对象
+     * @param value 枚举关键字对应的值
+     * @returns 
+     */
+    static getEnumKeyByEnumValue(enumObj: any, value: number): string {
+        for (const key in enumObj) {
+            if (enumObj[key] === value && isNaN(Number(key))) {
+                return key;
+            }
+        }
+        return '';
+    }
+
+    /**
+     * 根据枚举的键名获取枚举值
+     * @param enumObj 枚举对象
+     * @param keyName 键名
+     * @returns 
+     */
+    static getEnumValueByEnumKey(enumObj: any, keyName: string): any {
+        for (const key in enumObj) {
+            if (key == keyName) {
+                return enumObj[key];
+            }
+        }
+
+        return '';
+    }
+
+    /**
+     * 是空，未定义或者空字符串
+     * @param value 对象
+     * @returns 
+     */
+    static isNullOrEmpty(value: any): boolean {
+        return value === undefined || value === null || value === '';
+    }
+
+    /**
+     * 获取字典长度
+     * @param dictionary 字典
+     * @returns 
+     */
+    static getDictionaryLength(dictionary: { [key: string]: any }): number {
+        return Object.keys(dictionary).length;
     }
 }

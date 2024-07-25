@@ -1,5 +1,5 @@
 
-import { _decorator } from 'cc';
+import { _decorator, Node } from 'cc';
 import { FYComponent } from '../Base/FYComponent';
 import { FYEntry } from '../Base/FYEntry';
 import { FYUIModule } from './FYUIModule';
@@ -31,21 +31,23 @@ export class FYUIComponent extends FYComponent {
     /**
      * 打开UI
      * @param Ctor UI的类
+     * @param parent 父对象
      * @param cacheType 是否需要缓存，资源缓存类型
      * @returns 
      */
-     public async open<T extends FYUIControllerBase>(Ctor: new () => T, cacheType: FYEnum.ResourceCacheType = FYEnum.ResourceCacheType.None): Promise<T> {
-        return this.ui.open<T>(Ctor, cacheType);
+    public async open<T extends FYUIControllerBase>(Ctor: new () => T, parent?: Node, cacheType: FYEnum.ResourceCacheType = FYEnum.ResourceCacheType.None): Promise<T> {
+        return this.ui.open<T>(Ctor, parent, cacheType);
     }
 
     /**
      * 打开UI
      * @param clsName 类名
+     * @param parent 父对象
      * @param cacheType 是否需要缓存，资源缓存类型
      * @returns 
      */
-     public async openByName<T extends FYUIControllerBase>(clsName: string, cacheType: FYEnum.ResourceCacheType = FYEnum.ResourceCacheType.None): Promise<T> {
-        return this.ui.openByName(clsName, cacheType);
+    public async openByName<T extends FYUIControllerBase>(clsName: string, parent?: Node, cacheType: FYEnum.ResourceCacheType = FYEnum.ResourceCacheType.None): Promise<T> {
+        return this.ui.openByName(clsName, parent, cacheType);
     }
 
     /**

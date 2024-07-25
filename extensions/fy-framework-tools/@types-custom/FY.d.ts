@@ -35,6 +35,15 @@ interface String {
 	 * @param n 限制为几个字符
 	 */
 	limitLength: (n: number) => string;
+
+	/**
+	 * 格式化字符串
+	 * 例如：
+	 * const message = ''.format("Hello, my name is {0} and I am {1} years old.", name, age);
+	 * @param template 字符串模板
+	 * @param args 参数
+	 */
+	format:(template: string, ...args: any[]) => string;
 }
 
 //#endregion

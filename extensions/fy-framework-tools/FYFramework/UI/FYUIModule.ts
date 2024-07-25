@@ -49,22 +49,24 @@ export class FYUIModule extends FYModule {
     /**
      * 打开UI
      * @param Ctor UI的类
+     * @param parent 父对象
      * @param cacheType 是否需要缓存，资源缓存类型
      * @returns 
      */
-    public async open<T extends FYUIControllerBase>(Ctor: new () => T, cacheType: FYEnum.ResourceCacheType = FYEnum.ResourceCacheType.None): Promise<T> {
+    public async open<T extends FYUIControllerBase>(Ctor: new () => T, parent?: Node, cacheType: FYEnum.ResourceCacheType = FYEnum.ResourceCacheType.None): Promise<T> {
         let prefabName = FYUtility.getPrefabName(Ctor);
         let clsName = prefabName.substring(5);
-        return this.openByName(clsName, cacheType);
+        return this.openByName(clsName, parent, cacheType);
     }
 
     /**
      * 打开UI
      * @param clsName 类名
+     * @param parent 父对象
      * @param cacheType 是否需要缓存，资源缓存类型
      * @returns 
      */
-    public async openByName<T extends FYUIControllerBase>(clsName: string, cacheType: FYEnum.ResourceCacheType = FYEnum.ResourceCacheType.None): Promise<T> {
+    public async openByName<T extends FYUIControllerBase>(clsName: string, parent?: Node, cacheType: FYEnum.ResourceCacheType = FYEnum.ResourceCacheType.None): Promise<T> {
         return new Promise(async (resolve, reject) => {
             let prefabName = `P_UI_${clsName}`;
 
@@ -118,7 +120,18 @@ export class FYUIModule extends FYModule {
                 controller.model = model as FYUIModelBase;
                 controller.view = view;
                 // 有了父对象 如果默认是激活状态 onLoad和onEnable会立刻被执行
-                this.container.addChild(node);
+                let srcState = node.active;
+                node.active = false;
+
+                if (parent != null) {
+                    parent.addChild(node);
+                } else {
+                    this.container.addChild(node);
+                }
+                // 做完预处理，再显示UI，执行UI的生命周期，避免界面因为数据加载不及时，导致的闪烁
+                await controller.preLoad();
+                node.active = srcState;
+
                 node.reset();
                 //从onOpen UI List 中移除该已打开的UI
                 RemoveFromOnOpen();

@@ -6,7 +6,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const Const_1 = __importDefault(require("../Const"));
 class PrefabCodeBuilderConst {
 }
-exports.default = PrefabCodeBuilderConst;
 /**
  * 预制路径
  */
@@ -173,3 +172,4 @@ PrefabCodeBuilderConst.VIEW_KEY_EVENT_OFF = '$EVENT_OFF';
  * 模板 视图 事件回调
  */
 PrefabCodeBuilderConst.VIEW_KEY_EVENT_CALLBACK = '$EVENT_CALLBACK';
+exports.default = PrefabCodeBuilderConst;

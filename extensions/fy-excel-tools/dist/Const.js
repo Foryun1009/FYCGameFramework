@@ -2,7 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 class Const {
 }
-exports.default = Const;
 /**
  * 临时文件路径
  */
@@ -37,3 +36,6 @@ Const.TEMPLATE_NAME = 'CfgTemplate.txt';
 Const.TEMPLATE_KEY = '$CONFIG_NAME';
 /** 脚本模板参数关键字 */
 Const.TEMPLATE_KEY_PARAMS = '$CONFIG_PARAMS';
+/** 路径里assets/后有几个路径分隔符 */
+Const.TEMPLATE_KEY_SLASHES = '$CONFIG_SLASHES';
+exports.default = Const;

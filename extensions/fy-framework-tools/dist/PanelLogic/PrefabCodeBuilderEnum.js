@@ -10,4 +10,4 @@ var PrefabCodeBuilderEnum;
         /** 实例 */
         PrefabType["Entity"] = "Entity";
     })(PrefabType = PrefabCodeBuilderEnum.PrefabType || (PrefabCodeBuilderEnum.PrefabType = {}));
-})(PrefabCodeBuilderEnum = exports.PrefabCodeBuilderEnum || (exports.PrefabCodeBuilderEnum = {}));
+})(PrefabCodeBuilderEnum || (exports.PrefabCodeBuilderEnum = PrefabCodeBuilderEnum = {}));

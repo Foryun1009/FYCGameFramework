@@ -1,6 +1,6 @@
 # 项目简介
 
-- FYFramework的基础工具。
+- `FYFramework`的基础工具。
 - 将框架的配置添加的项目的配置中。
 - 将框架源码添加到项目中。
 - 生成资源的路径。
@@ -10,9 +10,9 @@
 
 ## 开发环境
 
-- Node.js
+- `Node.js`
 
-- CocosCreator3.3.0
+- `CocosCreator3.3.0`
 
 
 
@@ -35,15 +35,15 @@ npm run build
 
 ## 插件启动
 
-- CocosCreator菜单-->扩展-->扩展管理器
+- `CocosCreator菜单-->扩展-->扩展管理器`
 
-- 选择项目，找到fy-framework-tools，启动。
+- 选择项目，找到`fy-framework-tools`，启动。
 
 
 
 ## 插件入口
 
-- CocosCreator菜单-->扩展-->ForyunTools-->FY框架工具
+- `CocosCreator菜单-->扩展-->ForyunTools-->FY框架工具`
 
 
 
@@ -51,7 +51,7 @@ npm run build
 
 ### 辅助
 
-- 排除插件内的脚本，避免用vscode将插件里面的ts脚本也加入代码提示候选。
+- 排除插件内的脚本，避免用`vscode`将插件里面的`ts`脚本也加入代码提示候选。
 - 添加类型定义文件。
 
 ### 初始化框架
@@ -68,11 +68,11 @@ npm run build
 
 - 资源加载方式：
 
-- ```typescript
-  (await FY.resource.load<Texture2D>('bomb_items_01')).width;
-  ```
+```typescript
+(await FY.resource.load<Texture2D>('bomb_items_01')).width;
+```
 
-- 为了简化框架，加快开发进度，目前不考虑热更新和AssetBundle的封装，所以就直接粗暴的用resources加载资源了。
+- 为了简化框架，加快开发进度，目前不考虑热更新和`AssetBundle`的封装，所以就直接粗暴的用resources加载资源了。
 
 ### 预制脚本生成器
 
@@ -82,10 +82,8 @@ npm run build
 
 - 为了用户快速熟悉框架的用法，构建的样本项目，项目项目提供了一些简易的通用的模块，比如，提示框，确认框。同时，也做好了框架的初始化工作，便于拿来即用。
 
-- 使用方式，点击菜单栏，扩展->ForyunTools->1.FY框架工具->初始化样本项目。
-
-
+- 使用方式，点击菜单栏，`扩展->ForyunTools->1.FY框架工具->初始化样本项目`。
 
 # 注意事项
 
-- 需要自动生成脚本的预制，根节点一定要带cc.UITransform，不然根节点的组件会获取失败。
+- 需要自动生成脚本的预制，根节点一定要带`cc.UITransform`，不然根节点的组件会获取失败。

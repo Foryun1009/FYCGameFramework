@@ -204,5 +204,5 @@ class JsonHPack {
         return j;
     }
 }
-exports.default = JsonHPack;
 JsonHPack.cache = [];
+exports.default = JsonHPack;

@@ -15,6 +15,7 @@ import { FYUIComponent } from '../UI/FYUIComponent';
 import FYUtility from '../Utility/FYUtility';
 import { FYComponent } from './FYComponent';
 import { FYEntry } from './FYEntry';
+import { FYLocalizationComponent } from '../Localization/FYLocalizationComponent';
 const { ccclass, executionOrder, menu, property } = _decorator;
 
 @ccclass('FY')
@@ -43,6 +44,8 @@ export class FY extends Component {
     public static net: FYNetComponent;
     /** 计时器组件 */
     public static timer: FYTimerComponent;
+    /** 本地化组件 */
+    public static localization: FYLocalizationComponent;
 
     onLoad() {
         // 设置常驻节点
@@ -62,6 +65,7 @@ export class FY extends Component {
         FY.device = this.getOrAddComponent(FYDeviceComponent);
         FY.net = this.getOrAddComponent(FYNetComponent);
         FY.timer = this.getOrAddComponent(FYTimerComponent);
+        FY.localization = this.getOrAddComponent(FYLocalizationComponent);
     }
 
     public getOrAddComponent<T extends FYComponent>(Ctor: new () => T): T {
