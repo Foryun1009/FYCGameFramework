@@ -2,7 +2,7 @@ import { Button, _decorator } from 'cc';
 import { FY } from '../../../FYFramework/Base/FY';
 import { FYEnum } from '../../../FYFramework/Define/FYEnum';
 import { FYUIControllerBase } from '../../../FYFramework/UI/FYUIControllerBase';
-import CfgGameData from '../../Config/CfgGameData';
+import { CfgGameData } from '../../Config/CfgGameData';
 import { UIMenu } from '../UIMenu/UIMenu';
 import { UIConfigDemoModel } from './UIConfigDemoModel';
 import { UIConfigDemoView } from './UIConfigDemoView';
